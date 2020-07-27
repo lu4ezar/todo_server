@@ -1,4 +1,4 @@
-const dbPath = 'mongodb://localhost:27017/todolist';
+const dbPath = process.env.PROD_MONGODB || 'mongodb://localhost:27017/todolist';
 
 import mongoose from 'mongoose';
 
