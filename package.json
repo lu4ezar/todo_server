@@ -7,7 +7,7 @@
 		"start": "node ./dist/index",
 		"dev": "nodemon ./src/index.ts",
 		"generate": "graphql-codegen --config codegen.yml",
-		"build": "node_modules/.bin/webpack --config webpack.$NODE_ENV.js",
+		"build": "node_modules/.bin/webpack --config webpack.production.js",
 		"test": "echo \"Error: no test specified\" && exit 1"
 	},
 	"author": "",
