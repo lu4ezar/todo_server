@@ -15,6 +15,7 @@ const server = new ApolloServer({
   }),
   context: async () => db,
   playground: true,
+  introspection: true,
 });
 
 const app = express();
