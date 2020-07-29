@@ -14,6 +14,7 @@ const server = new ApolloServer({
     todosAPI: new TodosAPI(TodoModel.collection),
   }),
   context: async () => db,
+  playground: true,
 });
 
 const app = express();
