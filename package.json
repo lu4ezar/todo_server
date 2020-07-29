@@ -4,7 +4,7 @@
 	"description": "",
 	"main": "index.js",
 	"scripts": {
-		"start": "node ./dist/index",
+		"start": "node ./public/index",
 		"dev": "nodemon ./src/index.ts",
 		"generate": "graphql-codegen --config codegen.yml",
 		"build": "node_modules/.bin/webpack --config webpack.production.js",
