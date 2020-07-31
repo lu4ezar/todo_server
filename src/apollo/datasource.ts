@@ -24,15 +24,7 @@ class TodosAPI extends DataSource {
     const result = await todo.save();
     return result;
   }
-  async updateTodo(
-    _id: Scalars['ID'],
-    input: import('mongoose').MongooseUpdateQuery<
-      Pick<
-        ITodo,
-        '_id' | 'title' | 'description' | 'priority' | 'status' | 'created'
-      >
-    >,
-  ): Promise<ITodo> {
+  async updateTodo(_id: Scalars['ID'], input: TodoInput): Promise<ITodo> {
     return (await Todo.findOneAndUpdate({ _id }, input, {
       new: true,
     })) as ITodo;
