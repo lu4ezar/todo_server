@@ -10,6 +10,7 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
+  /** Date/Time type */
   DateTime: any;
 };
 
@@ -22,11 +23,12 @@ export type Scalars = {
 
 
 
+/** Todo type */
 export type Todo = {
   __typename?: 'Todo';
   id?: Maybe<Scalars['ID']>;
   title: Scalars['String'];
-  description?: Maybe<Scalars['String']>;
+  description: Scalars['String'];
   priority?: Maybe<TodoPriority>;
   status?: Maybe<TodoStatus>;
   created?: Maybe<Scalars['DateTime']>;
@@ -34,10 +36,9 @@ export type Todo = {
 
 export type TodoInput = {
   title: Scalars['String'];
-  description?: Maybe<Scalars['String']>;
-  priority?: Maybe<TodoPriority>;
-  status?: Maybe<TodoStatus>;
-  created?: Maybe<Scalars['DateTime']>;
+  description: Scalars['String'];
+  priority: TodoPriority;
+  status: TodoStatus;
 };
 
 export type Query = {
@@ -238,7 +239,7 @@ export interface DateTimeScalarConfig extends GraphQLScalarTypeConfig<ResolversT
 export type TodoResolvers<ContextType = any, ParentType extends ResolversParentTypes['Todo'] = ResolversParentTypes['Todo']> = ResolversObject<{
   id?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;
   title?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  description?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   priority?: Resolver<Maybe<ResolversTypes['TodoPriority']>, ParentType, ContextType>;
   status?: Resolver<Maybe<ResolversTypes['TodoStatus']>, ParentType, ContextType>;
   created?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;

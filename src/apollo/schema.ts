@@ -12,18 +12,17 @@ const typeDefs = gql`
   type Todo {
     id: ID
     title: String!
-    description: String
+    description: String!
     priority: TodoPriority
     status: TodoStatus
     created: DateTime
   }
 
   input TodoInput {
-    title: String
-    description: String
-    priority: TodoPriority
-    status: TodoStatus
-    created: DateTime
+    title: String!
+    description: String!
+    priority: TodoPriority!
+    status: TodoStatus!
   }
 
   type Query {
