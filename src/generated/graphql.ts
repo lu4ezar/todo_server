@@ -34,11 +34,18 @@ export type Todo = {
   created?: Maybe<Scalars['DateTime']>;
 };
 
-export type TodoInput = {
+export type CreateTodoInput = {
   title: Scalars['String'];
-  description: Scalars['String'];
-  priority: TodoPriority;
-  status: TodoStatus;
+  description?: Maybe<Scalars['String']>;
+  priority?: Maybe<TodoPriority>;
+  status?: Maybe<TodoStatus>;
+};
+
+export type UpdateTodoInput = {
+  title?: Maybe<Scalars['String']>;
+  description?: Maybe<Scalars['String']>;
+  priority?: Maybe<TodoPriority>;
+  status?: Maybe<TodoStatus>;
 };
 
 export type Query = {
@@ -61,13 +68,13 @@ export type Mutation = {
 
 
 export type MutationCreateTodoArgs = {
-  input: TodoInput;
+  input: CreateTodoInput;
 };
 
 
 export type MutationUpdateTodoArgs = {
   id: Scalars['ID'];
-  input: TodoInput;
+  input: UpdateTodoInput;
 };
 
 
@@ -175,7 +182,8 @@ export type ResolversTypes = ResolversObject<{
   Todo: ResolverTypeWrapper<Todo>;
   ID: ResolverTypeWrapper<Scalars['ID']>;
   String: ResolverTypeWrapper<Scalars['String']>;
-  TodoInput: TodoInput;
+  CreateTodoInput: CreateTodoInput;
+  UpdateTodoInput: UpdateTodoInput;
   Query: ResolverTypeWrapper<{}>;
   Mutation: ResolverTypeWrapper<{}>;
   TodoPriority: TodoPriority;
@@ -190,7 +198,8 @@ export type ResolversParentTypes = ResolversObject<{
   Todo: Todo;
   ID: Scalars['ID'];
   String: Scalars['String'];
-  TodoInput: TodoInput;
+  CreateTodoInput: CreateTodoInput;
+  UpdateTodoInput: UpdateTodoInput;
   Query: {};
   Mutation: {};
   AdditionalEntityFields: AdditionalEntityFields;

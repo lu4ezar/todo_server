@@ -2,7 +2,7 @@ import { DataSource } from 'apollo-datasource';
 import { Collection } from 'mongoose';
 import type { ITodo } from '../mongoose/todo.interface';
 import Todo from '../mongoose/todo.model';
-import { TodoInput, Scalars } from '../generated/graphql';
+import { CreateTodoInput, Scalars } from '../generated/graphql';
 
 class TodosAPI extends DataSource {
   collection: Collection;
@@ -19,12 +19,21 @@ class TodosAPI extends DataSource {
     return (await Todo.findOne({ _id })) as ITodo;
   }
   // Mutations
-  async createTodo(input: TodoInput): Promise<ITodo> {
+  async createTodo(input: CreateTodoInput): Promise<ITodo> {
     const todo = new Todo({ ...input });
     const result = await todo.save();
     return result;
   }
-  async updateTodo(_id: Scalars['ID'], input: TodoInput): Promise<ITodo> {
+  async updateTodo(
+    _id: Scalars['ID'],
+    // TODO set proper type
+    input: import('mongoose').MongooseUpdateQuery<
+      Pick<
+        ITodo,
+        '_id' | 'title' | 'description' | 'priority' | 'status' | 'created'
+      >
+    >,
+  ): Promise<ITodo> {
     return (await Todo.findOneAndUpdate({ _id }, input, {
       new: true,
     })) as ITodo;

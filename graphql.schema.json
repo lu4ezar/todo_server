@@ -132,7 +132,7 @@
       },
       {
         "kind": "INPUT_OBJECT",
-        "name": "TodoInput",
+        "name": "CreateTodoInput",
         "description": null,
         "fields": null,
         "inputFields": [
@@ -154,13 +154,9 @@
             "name": "description",
             "description": null,
             "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              }
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
             },
             "defaultValue": null
           },
@@ -168,13 +164,9 @@
             "name": "priority",
             "description": null,
             "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "ENUM",
-                "name": "TodoPriority",
-                "ofType": null
-              }
+              "kind": "ENUM",
+              "name": "TodoPriority",
+              "ofType": null
             },
             "defaultValue": null
           },
@@ -182,13 +174,60 @@
             "name": "status",
             "description": null,
             "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "ENUM",
-                "name": "TodoStatus",
-                "ofType": null
-              }
+              "kind": "ENUM",
+              "name": "TodoStatus",
+              "ofType": null
+            },
+            "defaultValue": null
+          }
+        ],
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "INPUT_OBJECT",
+        "name": "UpdateTodoInput",
+        "description": null,
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "title",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "description",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "priority",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "TodoPriority",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "status",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "TodoStatus",
+              "ofType": null
             },
             "defaultValue": null
           }
@@ -268,7 +307,7 @@
                   "name": null,
                   "ofType": {
                     "kind": "INPUT_OBJECT",
-                    "name": "TodoInput",
+                    "name": "CreateTodoInput",
                     "ofType": null
                   }
                 },
@@ -313,7 +352,7 @@
                   "name": null,
                   "ofType": {
                     "kind": "INPUT_OBJECT",
-                    "name": "TodoInput",
+                    "name": "UpdateTodoInput",
                     "ofType": null
                   }
                 },
