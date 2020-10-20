@@ -10,7 +10,7 @@ const typeDefs = gql`
   Todo type
   """
   type Todo {
-    id: ID
+    id: ID!
     title: String!
     description: String!
     priority: TodoPriority
