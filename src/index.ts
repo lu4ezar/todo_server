@@ -1,14 +1,14 @@
 /* eslint-disable no-console */
 import express from 'express';
 import { ApolloServer } from 'apollo-server-express';
-import typeDefs from './apollo/schema';
+import { Common, Todo, Checklist } from './apollo/typeDefs/';
 import resolvers from './apollo/resolvers';
 import db from './mongoose/db';
 import TodoModel from './mongoose/todo.model';
 import TodosAPI from './apollo/datasource';
 
 const server = new ApolloServer({
-  typeDefs,
+  typeDefs: [Common, Todo, Checklist],
   resolvers,
   dataSources: () => ({
     todosAPI: new TodosAPI(TodoModel.collection),
