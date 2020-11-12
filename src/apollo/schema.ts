@@ -6,18 +6,6 @@ const typeDefs = gql`
   """
   scalar DateTime
 
-  """
-  Todo type
-  """
-  type Todo {
-    id: ID!
-    title: String!
-    description: String!
-    priority: TodoPriority
-    status: TodoStatus
-    created: DateTime
-  }
-
   input CreateTodoInput {
     title: String!
     description: String
@@ -41,18 +29,6 @@ const typeDefs = gql`
     createTodo(input: CreateTodoInput!): Todo!
     updateTodo(id: ID!, input: UpdateTodoInput!): Todo!
     deleteTodo(id: ID!): Todo!
-  }
-
-  enum TodoPriority {
-    LOW
-    NORMAL
-    HIGH
-  }
-
-  enum TodoStatus {
-    ACTIVE
-    COMPLETED
-    EXPIRED
   }
 `;
 

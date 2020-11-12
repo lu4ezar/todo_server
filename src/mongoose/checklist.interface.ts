@@ -1,11 +1,13 @@
-import { Document } from 'mongoose';
 
-export interface ITodo extends Document {
+import { Document } from 'mongoose';
+import { Todo } from "./todo.interface";
+
+export interface IChecklist extends Document {
   id: string;
   title: string;
   description: string;
   priority: string;
   status: string;
   created: Date;
-  expires: Date;
+  todos: [Todo];
 }
