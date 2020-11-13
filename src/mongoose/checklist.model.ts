@@ -1,6 +1,6 @@
 
 import mongoose, { Schema } from 'mongoose';
-import { ICheckiist } from './checklist.interface';
+import { IChecklist } from './checklist.interface';
 import { Todo, TodoPriority, TodoStatus } from '../generated/graphql';
 
 export const ChecklistSchema: Schema = new mongoose.Schema({

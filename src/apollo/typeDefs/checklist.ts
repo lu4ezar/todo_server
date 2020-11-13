@@ -6,6 +6,12 @@ export default gql`
 	"""
 	
   type Checklist implements CommonFields {
+		id: ID!
+		title: String!
+		description: String
+		priority: Priority!
+		status: Status!
+		created: DateTime!
     todos: [Todo!]!
 	}
 	

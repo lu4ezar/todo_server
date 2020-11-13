@@ -1,10 +1,10 @@
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
-const nodeExternals = require('webpack-node-externals');
-const merge = require('webpack-merge');
-const webpack = require('webpack');
-const path = require('path');
+import { CleanWebpackPlugin } = require('clean-webpack-plugin');
+import nodeExternals = require('webpack-node-externals');
+import merge = require('webpack-merge');
+import webpack = require('webpack');
+import path = require('path');
 
-const common = require('./webpack.common');
+import common = require('./webpack.common');
 
 module.exports = merge.smart(common, {
   devtool: 'inline-source-map',

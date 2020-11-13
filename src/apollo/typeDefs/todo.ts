@@ -6,7 +6,12 @@ export default gql`
   Todo type
   """
 	type Todo implements CommonFields {
-		id:
+		id: ID!
+		title: String!
+		description: String
+		priority: Priority!
+		status: Status!
+		created: DateTime!
 	}
 
 	type Query {

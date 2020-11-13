@@ -1,9 +1,11 @@
 overwrite: true
-schema: './src/apollo/schema.ts'
+schema: './src/apollo/typeDefs/index.ts'
 documents: null
 generates:
   src/generated/graphql.ts:
     plugins:
+      - add:
+        content: '/* eslint-disable */'
       - 'typescript'
       - 'typescript-resolvers'
       - 'typescript-mongodb'
@@ -13,3 +15,5 @@ generates:
   ./graphql.schema.json:
     plugins:
       - 'introspection'
+require: 
+  - ts-node/register
