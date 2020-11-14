@@ -1,5 +1,9 @@
+import dotenv from 'dotenv';
+
+dotenv.config();
+
 const dbPath =
-  process.env.NODE === 'production'
+  process.env.NODE_ENV === 'production'
     ? (process.env.PROD_MONGODB as string)
     : (process.env.DEV_MONGODB as string);
 
