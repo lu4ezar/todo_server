@@ -1,5 +1,5 @@
 import { DataSource } from 'apollo-datasource';
-import { Collection } from 'mongoose';
+import { Collection, MongooseUpdateQuery } from 'mongoose';
 import type { ITodo } from '../mongoose/todo.interface';
 import Todo from '../mongoose/todo.model';
 import { CreateTodoInput, Scalars } from '../generated/graphql';
@@ -26,8 +26,7 @@ class TodosAPI extends DataSource {
   }
   async updateTodo(
     _id: Scalars['ID'],
-    // TODO set proper type
-    input: import('mongoose').MongooseUpdateQuery<
+    input: MongooseUpdateQuery<
       Pick<
         ITodo,
         '_id' | 'title' | 'description' | 'priority' | 'status' | 'created'
