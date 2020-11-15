@@ -87,7 +87,7 @@ export class ChecklistsAPI extends DataSource {
     })) as IChecklist;
   }
   async deleteTodo(_id: Scalars['ID']): Promise<IChecklist> {
-    const checklist = (await Todo.findById({ _id })) as IChecklist;
+    const checklist = (await Checklist.findById({ _id })) as IChecklist;
     await Checklist.deleteOne({ _id });
     return checklist;
   }
