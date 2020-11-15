@@ -1,10 +1,16 @@
 import { DataSource } from 'apollo-datasource';
-import { Collection } from 'mongoose';
-import type { ITodo } from '../mongoose/todo.interface';
+import { Collection, MongooseUpdateQuery } from 'mongoose';
+import { ITodo } from '../mongoose/todo.interface';
+import { IChecklist } from '../mongoose/checklist.interface';
 import Todo from '../mongoose/todo.model';
-import { CreateTodoInput, Scalars } from '../generated/graphql';
+import Checklist from '../mongoose/checklist.model';
+import {
+  CreateTodoInput,
+  CreateChecklistInput,
+  Scalars,
+} from '../generated/graphql';
 
-class TodosAPI extends DataSource {
+export class TodosAPI extends DataSource {
   collection: Collection;
   constructor(collection: Collection) {
     super();
@@ -18,6 +24,7 @@ class TodosAPI extends DataSource {
   async getTodo(_id: Scalars['ID']): Promise<ITodo> {
     return (await Todo.findOne({ _id })) as ITodo;
   }
+
   // Mutations
   async createTodo(input: CreateTodoInput): Promise<ITodo> {
     const todo = new Todo({ ...input });
@@ -26,11 +33,10 @@ class TodosAPI extends DataSource {
   }
   async updateTodo(
     _id: Scalars['ID'],
-    // TODO set proper type
-    input: import('mongoose').MongooseUpdateQuery<
+    input: MongooseUpdateQuery<
       Pick<
         ITodo,
-        '_id' | 'title' | 'description' | 'priority' | 'status' | 'created'
+        'id' | 'title' | 'description' | 'priority' | 'status' | 'created'
       >
     >,
   ): Promise<ITodo> {
@@ -45,4 +51,44 @@ class TodosAPI extends DataSource {
   }
 }
 
-export default TodosAPI;
+export class ChecklistsAPI extends DataSource {
+  collection: Collection;
+  constructor(collection: Collection) {
+    super();
+    this.collection = collection;
+  }
+
+  // Queries
+  async getChecklists(): Promise<Array<IChecklist>> {
+    return Checklist.find();
+  }
+
+  async getChecklist(_id: Scalars['ID']): Promise<IChecklist> {
+    return (await Checklist.findOne({ _id })) as IChecklist;
+	}
+	
+  // Mutations
+  async createChecklist(input: CreateChecklistInput): Promise<IChecklist> {
+    const checklist = new Checklist({ ...input });
+    const result = await checklist.save();
+    return result;
+  }
+  async updateTodo(
+    _id: Scalars['ID'],
+    input: MongooseUpdateQuery<
+      Pick<
+        IChecklist,
+        'id' | 'title' | 'description' | 'priority' | 'status' | 'created'
+      >
+    >,
+  ): Promise<IChecklist> {
+    return (await Checklist.findOneAndUpdate({ _id }, input, {
+      new: true,
+    })) as IChecklist;
+  }
+  async deleteTodo(_id: Scalars['ID']): Promise<IChecklist> {
+    const checklist = (await Todo.findById({ _id })) as IChecklist;
+    await Checklist.deleteOne({ _id });
+    return checklist;
+  }
+}

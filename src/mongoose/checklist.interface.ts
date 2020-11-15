@@ -1,6 +1,5 @@
-
 import { Document } from 'mongoose';
-import { Todo } from "./todo.interface";
+import { Todo } from '../generated/graphql';
 
 export interface IChecklist extends Document {
   id: string;
@@ -9,5 +8,5 @@ export interface IChecklist extends Document {
   priority: string;
   status: string;
   created: Date;
-  todos: [Todo];
+  todos: Todo[];
 }

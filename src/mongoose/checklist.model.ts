@@ -1,23 +1,17 @@
-
-import mongoose, { Schema } from 'mongoose';
+import { model, Schema } from 'mongoose';
 import { IChecklist } from './checklist.interface';
-import { Todo, TodoPriority, TodoStatus } from '../generated/graphql';
+import { Priority, Status } from '../generated/graphql';
 
-export const ChecklistSchema: Schema = new mongoose.Schema({
+const ChecklistSchema: Schema = new Schema({
   title: { type: String, required: true, unique: true },
   description: String,
-  priority: { type: TodoPriority },
-  status: { type: TodoStatus },
+  priority: { type: Priority },
+  status: { type: Status },
   created: {
     type: Date,
     default: Date.now(),
   },
-  todos: {
-    type: Todo,
-    default: []
-  }
+  todos: { type: Array, default: [] },
 });
 
-const ChecklistModel = mongoose.model<IChecklist>('Checklist', ChecklistSchema);
-
-export default ChecklistModel;
+export default model<IChecklist>('Checklist', ChecklistSchema);

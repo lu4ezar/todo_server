@@ -1,18 +1,16 @@
-import mongoose, { Schema } from 'mongoose';
+import { model, Schema } from 'mongoose';
 import { ITodo } from './todo.interface';
-import { TodoPriority, TodoStatus } from '../generated/graphql';
+import { Priority, Status } from '../generated/graphql';
 
-export const TodoSchema: Schema = new mongoose.Schema({
+const TodoSchema: Schema = new Schema({
   title: { type: String, required: true, unique: true },
   description: String,
-  priority: { type: TodoPriority },
-  status: { type: TodoStatus },
+  priority: { type: Priority },
+  status: { type: Status },
   created: {
     type: Date,
     default: Date.now(),
   },
 });
 
-const TodoModel = mongoose.model<ITodo>('Todo', TodoSchema);
-
-export default TodoModel;
+export default model<ITodo>('Todo', TodoSchema);
