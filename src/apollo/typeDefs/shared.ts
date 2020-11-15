@@ -6,9 +6,9 @@ export default gql`
   """
   scalar DateTime
 
-	type Query
+  type Query
 
-	type Mutation
+  type Mutation
 
   enum Priority {
     LOW
@@ -22,18 +22,3 @@ export default gql`
     EXPIRED
   }
 `;
-
-/*
-"""
-  common fields
-  """
-  interface CommonFields {
-    id: ID!
-    title: String!
-    description: String
-    priority: Priority!
-    status: Status!
-    created: DateTime!
-  }
-
-	*/

@@ -1,5 +1,4 @@
 import { gql } from 'apollo-server-express';
-//type Checklist implements CommonFields {
 
 export default gql`
   """

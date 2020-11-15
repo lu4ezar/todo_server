@@ -1,5 +1,4 @@
 import { gql } from 'apollo-server-express';
-//type Todo implements CommonFields {
 
 export default gql`
   """
