@@ -1,7 +1,9 @@
 import { DataSource } from 'apollo-datasource';
 import { Collection, MongooseUpdateQuery } from 'mongoose';
-import type { ITodo } from '../mongoose/todo.interface';
+import { ITodo } from '../mongoose/todo.interface';
+import { IChecklist } from '../mongoose/checklist.interface';
 import Todo from '../mongoose/todo.model';
+import Checklist from '../mongoose/checklist.model';
 import { CreateTodoInput, Scalars } from '../generated/graphql';
 
 class TodosAPI extends DataSource {
@@ -10,13 +12,22 @@ class TodosAPI extends DataSource {
     super();
     this.collection = collection;
   }
-  // Queries
+  /*
+   * Queries
+   */
   async getTodos(): Promise<Array<ITodo>> {
     return Todo.find();
   }
 
   async getTodo(_id: Scalars['ID']): Promise<ITodo> {
     return (await Todo.findOne({ _id })) as ITodo;
+  }
+  async getChecklists(): Promise<Array<IChecklist>> {
+    return Checklist.find();
+  }
+
+  async getChecklist(_id: Scalars['ID']): Promise<IChecklist> {
+    return (await Checklist.findOne({ _id })) as IChecklist;
   }
   // Mutations
   async createTodo(input: CreateTodoInput): Promise<ITodo> {
@@ -29,7 +40,7 @@ class TodosAPI extends DataSource {
     input: MongooseUpdateQuery<
       Pick<
         ITodo,
-        '_id' | 'title' | 'description' | 'priority' | 'status' | 'created'
+        'id' | 'title' | 'description' | 'priority' | 'status' | 'created'
       >
     >,
   ): Promise<ITodo> {

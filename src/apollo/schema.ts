@@ -6,35 +6,79 @@ const typeDefs = gql`
   """
   scalar DateTime
 
+  enum Priority {
+    LOW
+    NORMAL
+    HIGH
+  }
+
+  enum Status {
+    ACTIVE
+    COMPLETED
+    EXPIRED
+  }
+
   """
   Todo type
   """
   type Todo {
     id: ID!
     title: String!
-    description: String!
-    priority: TodoPriority
-    status: TodoStatus
-    created: DateTime
+    description: String
+    priority: Priority!
+    status: Status!
+    created: DateTime!
+  }
+
+  """
+  Checklist type
+  """
+  type Checklist {
+    id: ID!
+    title: String!
+    description: String
+    priority: Priority!
+    status: Status!
+    created: DateTime!
+    todos: [Todo!]!
   }
 
   input CreateTodoInput {
     title: String!
     description: String
-    priority: TodoPriority
-    status: TodoStatus
+    priority: Priority
+    status: Status
   }
 
   input UpdateTodoInput {
     title: String
     description: String
-    priority: TodoPriority
-    status: TodoStatus
+    priority: Priority
+    status: Status
+  }
+
+  input CreateChecklistInput {
+    title: String!
+    description: String
+    priority: Priority
+    status: Status
+  }
+
+  input UpdateChecklistInput {
+    title: String
+    description: String
+    priority: Priority
+    status: Status
   }
 
   type Query {
     todo(id: ID!): Todo
     todos: [Todo]
+  }
+
+  extend type Query {
+    checklist(id: ID!): Checklist
+    checklists: [Checklist!]!
   }
 
   type Mutation {
@@ -43,16 +87,10 @@ const typeDefs = gql`
     deleteTodo(id: ID!): Todo!
   }
 
-  enum TodoPriority {
-    LOW
-    NORMAL
-    HIGH
-  }
-
-  enum TodoStatus {
-    ACTIVE
-    COMPLETED
-    EXPIRED
+  extend type Mutation {
+    createChecklist(input: CreateChecklistInput!): Checklist!
+    updateChecklist(id: ID!, input: UpdateChecklistInput!): Checklist!
+    deleteChecklist(id: ID!): Checklist!
   }
 `;
 

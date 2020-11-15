@@ -1,7 +1,7 @@
 import { GraphQLResolveInfo, GraphQLScalarType, GraphQLScalarTypeConfig } from 'graphql';
 import gql from 'graphql-tag';
 export type Maybe<T> = T | null;
-export type Exact<T extends { [key: string]: any }> = { [K in keyof T]: T[K] };
+export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
 export type RequireFields<T, K extends keyof T> = { [X in Exclude<keyof T, K>]?: T[X] } & { [P in K]-?: NonNullable<T[P]> };
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
@@ -23,35 +23,80 @@ export type Scalars = {
 
 
 
-/** Todo type */
+export enum Priority {
+  Low = 'LOW',
+  Normal = 'NORMAL',
+  High = 'HIGH'
+}
+
+export enum Status {
+  Active = 'ACTIVE',
+  Completed = 'COMPLETED',
+  Expired = 'EXPIRED'
+}
+
+/** Todo interface */
 export type Todo = {
   __typename?: 'Todo';
-  id?: Maybe<Scalars['ID']>;
+  id: Scalars['ID'];
   title: Scalars['String'];
-  description: Scalars['String'];
-  priority?: Maybe<TodoPriority>;
-  status?: Maybe<TodoStatus>;
-  created?: Maybe<Scalars['DateTime']>;
+  description?: Maybe<Scalars['String']>;
+  priority: Priority;
+  status: Status;
+  created: Scalars['DateTime'];
+};
+
+/** Checklist type */
+export type Checklist = {
+  __typename?: 'Checklist';
+  id: Scalars['ID'];
+  title: Scalars['String'];
+  description?: Maybe<Scalars['String']>;
+  priority: Priority;
+  status: Status;
+  created: Scalars['DateTime'];
+  todos: Array<Todo>;
 };
 
 export type CreateTodoInput = {
   title: Scalars['String'];
   description?: Maybe<Scalars['String']>;
-  priority?: Maybe<TodoPriority>;
-  status?: Maybe<TodoStatus>;
+  priority?: Maybe<Priority>;
+  status?: Maybe<Status>;
 };
 
 export type UpdateTodoInput = {
   title?: Maybe<Scalars['String']>;
   description?: Maybe<Scalars['String']>;
-  priority?: Maybe<TodoPriority>;
-  status?: Maybe<TodoStatus>;
+  priority?: Maybe<Priority>;
+  status?: Maybe<Status>;
+};
+
+export type CreateChecklistInput = {
+  title: Scalars['String'];
+  description?: Maybe<Scalars['String']>;
+  priority?: Maybe<Priority>;
+  status?: Maybe<Status>;
+};
+
+export type UpdateChecklistInput = {
+  title?: Maybe<Scalars['String']>;
+  description?: Maybe<Scalars['String']>;
+  priority?: Maybe<Priority>;
+  status?: Maybe<Status>;
 };
 
 export type Query = {
   __typename?: 'Query';
+  checklist?: Maybe<Checklist>;
+  checklists: Array<Checklist>;
   todo?: Maybe<Todo>;
   todos?: Maybe<Array<Maybe<Todo>>>;
+};
+
+
+export type QueryChecklistArgs = {
+  id: Scalars['ID'];
 };
 
 
@@ -61,9 +106,17 @@ export type QueryTodoArgs = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  createChecklist: Checklist;
   createTodo: Todo;
-  updateTodo: Todo;
+  deleteChecklist: Checklist;
   deleteTodo: Todo;
+  updateChecklist: Checklist;
+  updateTodo: Todo;
+};
+
+
+export type MutationCreateChecklistArgs = {
+  input: CreateChecklistInput;
 };
 
 
@@ -72,9 +125,8 @@ export type MutationCreateTodoArgs = {
 };
 
 
-export type MutationUpdateTodoArgs = {
+export type MutationDeleteChecklistArgs = {
   id: Scalars['ID'];
-  input: UpdateTodoInput;
 };
 
 
@@ -82,17 +134,17 @@ export type MutationDeleteTodoArgs = {
   id: Scalars['ID'];
 };
 
-export enum TodoPriority {
-  Low = 'LOW',
-  Normal = 'NORMAL',
-  High = 'HIGH'
-}
 
-export enum TodoStatus {
-  Active = 'ACTIVE',
-  Completed = 'COMPLETED',
-  Expired = 'EXPIRED'
-}
+export type MutationUpdateChecklistArgs = {
+  id: Scalars['ID'];
+  input: UpdateChecklistInput;
+};
+
+
+export type MutationUpdateTodoArgs = {
+  id: Scalars['ID'];
+  input: UpdateTodoInput;
+};
 
 export type AdditionalEntityFields = {
   path?: Maybe<Scalars['String']>;
@@ -164,7 +216,7 @@ export type TypeResolveFn<TTypes, TParent = {}, TContext = {}> = (
   info: GraphQLResolveInfo
 ) => Maybe<TTypes> | Promise<Maybe<TTypes>>;
 
-export type IsTypeOfResolverFn<T = {}> = (obj: T, info: GraphQLResolveInfo) => boolean | Promise<boolean>;
+export type IsTypeOfResolverFn<T = {}, TContext = {}> = (obj: T, context: TContext, info: GraphQLResolveInfo) => boolean | Promise<boolean>;
 
 export type NextResolverFn<T> = () => Promise<T>;
 
@@ -179,15 +231,18 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = ResolversObject<{
   DateTime: ResolverTypeWrapper<Scalars['DateTime']>;
+  Priority: Priority;
+  Status: Status;
   Todo: ResolverTypeWrapper<Todo>;
   ID: ResolverTypeWrapper<Scalars['ID']>;
   String: ResolverTypeWrapper<Scalars['String']>;
+  Checklist: ResolverTypeWrapper<Checklist>;
   CreateTodoInput: CreateTodoInput;
   UpdateTodoInput: UpdateTodoInput;
+  CreateChecklistInput: CreateChecklistInput;
+  UpdateChecklistInput: UpdateChecklistInput;
   Query: ResolverTypeWrapper<{}>;
   Mutation: ResolverTypeWrapper<{}>;
-  TodoPriority: TodoPriority;
-  TodoStatus: TodoStatus;
   AdditionalEntityFields: AdditionalEntityFields;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
 }>;
@@ -198,8 +253,11 @@ export type ResolversParentTypes = ResolversObject<{
   Todo: Todo;
   ID: Scalars['ID'];
   String: Scalars['String'];
+  Checklist: Checklist;
   CreateTodoInput: CreateTodoInput;
   UpdateTodoInput: UpdateTodoInput;
+  CreateChecklistInput: CreateChecklistInput;
+  UpdateChecklistInput: UpdateChecklistInput;
   Query: {};
   Mutation: {};
   AdditionalEntityFields: AdditionalEntityFields;
@@ -246,29 +304,46 @@ export interface DateTimeScalarConfig extends GraphQLScalarTypeConfig<ResolversT
 }
 
 export type TodoResolvers<ContextType = any, ParentType extends ResolversParentTypes['Todo'] = ResolversParentTypes['Todo']> = ResolversObject<{
-  id?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   title?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  description?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  priority?: Resolver<Maybe<ResolversTypes['TodoPriority']>, ParentType, ContextType>;
-  status?: Resolver<Maybe<ResolversTypes['TodoStatus']>, ParentType, ContextType>;
-  created?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType>;
+  description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  priority?: Resolver<ResolversTypes['Priority'], ParentType, ContextType>;
+  status?: Resolver<ResolversTypes['Status'], ParentType, ContextType>;
+  created?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type ChecklistResolvers<ContextType = any, ParentType extends ResolversParentTypes['Checklist'] = ResolversParentTypes['Checklist']> = ResolversObject<{
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  title?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  priority?: Resolver<ResolversTypes['Priority'], ParentType, ContextType>;
+  status?: Resolver<ResolversTypes['Status'], ParentType, ContextType>;
+  created?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
+  todos?: Resolver<Array<ResolversTypes['Todo']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = ResolversObject<{
+  checklist?: Resolver<Maybe<ResolversTypes['Checklist']>, ParentType, ContextType, RequireFields<QueryChecklistArgs, 'id'>>;
+  checklists?: Resolver<Array<ResolversTypes['Checklist']>, ParentType, ContextType>;
   todo?: Resolver<Maybe<ResolversTypes['Todo']>, ParentType, ContextType, RequireFields<QueryTodoArgs, 'id'>>;
   todos?: Resolver<Maybe<Array<Maybe<ResolversTypes['Todo']>>>, ParentType, ContextType>;
 }>;
 
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = ResolversObject<{
+  createChecklist?: Resolver<ResolversTypes['Checklist'], ParentType, ContextType, RequireFields<MutationCreateChecklistArgs, 'input'>>;
   createTodo?: Resolver<ResolversTypes['Todo'], ParentType, ContextType, RequireFields<MutationCreateTodoArgs, 'input'>>;
-  updateTodo?: Resolver<ResolversTypes['Todo'], ParentType, ContextType, RequireFields<MutationUpdateTodoArgs, 'id' | 'input'>>;
+  deleteChecklist?: Resolver<ResolversTypes['Checklist'], ParentType, ContextType, RequireFields<MutationDeleteChecklistArgs, 'id'>>;
   deleteTodo?: Resolver<ResolversTypes['Todo'], ParentType, ContextType, RequireFields<MutationDeleteTodoArgs, 'id'>>;
+  updateChecklist?: Resolver<ResolversTypes['Checklist'], ParentType, ContextType, RequireFields<MutationUpdateChecklistArgs, 'id' | 'input'>>;
+  updateTodo?: Resolver<ResolversTypes['Todo'], ParentType, ContextType, RequireFields<MutationUpdateTodoArgs, 'id' | 'input'>>;
 }>;
 
 export type Resolvers<ContextType = any> = ResolversObject<{
   DateTime?: GraphQLScalarType;
   Todo?: TodoResolvers<ContextType>;
+  Checklist?: ChecklistResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;
 }>;
