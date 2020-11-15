@@ -1,11 +1,11 @@
 import { gql } from 'apollo-server-express';
-// import Common from './common';
+//type Todo implements CommonFields {
 
 export default gql`
   """
   Todo type
   """
-	type Todo implements CommonFields {
+	type Todo {
 		id: ID!
 		title: String!
 		description: String
@@ -14,12 +14,12 @@ export default gql`
 		created: DateTime!
 	}
 
-	type Query {
+	extend type Query {
     todo(id: ID!): Todo
     todos: [Todo!]!
   }
 
-  type Mutation {
+  extend type Mutation {
     createTodo(input: CreateTodoInput!): Todo!
     updateTodo(id: ID!, input: UpdateTodoInput!): Todo!
     deleteTodo(id: ID!): Todo!

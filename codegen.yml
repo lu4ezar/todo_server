@@ -1,15 +1,16 @@
 overwrite: true
-schema: './src/apollo/typeDefs/index.ts'
+schema: 'src/apollo/schema.ts'
 documents: null
 generates:
   src/generated/graphql.ts:
     plugins:
       - add:
-        content: '/* eslint-disable */'
-      - 'typescript'
-      - 'typescript-resolvers'
-      - 'typescript-mongodb'
-      - 'typescript-document-nodes'
+        content:
+          - '/* eslint-disable */'
+      - typescript
+      - typescript-resolvers
+      - typescript-mongodb
+      - typescript-document-nodes
     config:
       useIndexSignature: true
   ./graphql.schema.json:

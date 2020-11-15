@@ -1,11 +1,12 @@
 import { gql } from 'apollo-server-express';
+//type Checklist implements CommonFields {
 
 export default gql`
   """
   Checklist Type
 	"""
 	
-  type Checklist implements CommonFields {
+  type Checklist {
 		id: ID!
 		title: String!
 		description: String

@@ -1,4 +1,4 @@
-import Todos from './Todos';
-import Checklists from './Checklists';
+import Todos from './todos';
+import Checklists from './checklists';
 
 export { Todos, Checklists };
