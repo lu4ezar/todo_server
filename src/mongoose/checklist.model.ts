@@ -1,8 +1,6 @@
 import { model, Schema } from 'mongoose';
 import { IChecklist } from './checklist.interface';
-// import { ITodo } from './todo.interface';.
-
-import { Todo, Priority, Status } from '../generated/graphql';
+import { Priority, Status } from '../generated/graphql';
 
 const ChecklistSchema: Schema = new Schema({
   title: { type: String, required: true, unique: true },
@@ -13,7 +11,7 @@ const ChecklistSchema: Schema = new Schema({
     type: Date,
     default: Date.now(),
   },
-  todos: { type: [Todo] },
+  todos: { type: Array, default: [] },
 });
 
 export default model<IChecklist>('Checklist', ChecklistSchema);

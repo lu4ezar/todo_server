@@ -4,17 +4,19 @@ import { ITodo } from '../mongoose/todo.interface';
 import { IChecklist } from '../mongoose/checklist.interface';
 import Todo from '../mongoose/todo.model';
 import Checklist from '../mongoose/checklist.model';
-import { CreateTodoInput, Scalars } from '../generated/graphql';
+import {
+  CreateTodoInput,
+  CreateChecklistInput,
+  Scalars,
+} from '../generated/graphql';
 
-class TodosAPI extends DataSource {
+export class TodosAPI extends DataSource {
   collection: Collection;
   constructor(collection: Collection) {
     super();
     this.collection = collection;
   }
-  /*
-   * Queries
-   */
+  // Queries
   async getTodos(): Promise<Array<ITodo>> {
     return Todo.find();
   }
@@ -22,13 +24,7 @@ class TodosAPI extends DataSource {
   async getTodo(_id: Scalars['ID']): Promise<ITodo> {
     return (await Todo.findOne({ _id })) as ITodo;
   }
-  async getChecklists(): Promise<Array<IChecklist>> {
-    return Checklist.find();
-  }
 
-  async getChecklist(_id: Scalars['ID']): Promise<IChecklist> {
-    return (await Checklist.findOne({ _id })) as IChecklist;
-  }
   // Mutations
   async createTodo(input: CreateTodoInput): Promise<ITodo> {
     const todo = new Todo({ ...input });
@@ -55,4 +51,44 @@ class TodosAPI extends DataSource {
   }
 }
 
-export default TodosAPI;
+export class ChecklistsAPI extends DataSource {
+  collection: Collection;
+  constructor(collection: Collection) {
+    super();
+    this.collection = collection;
+  }
+
+  // Queries
+  async getChecklists(): Promise<Array<IChecklist>> {
+    return Checklist.find();
+  }
+
+  async getChecklist(_id: Scalars['ID']): Promise<IChecklist> {
+    return (await Checklist.findOne({ _id })) as IChecklist;
+	}
+	
+  // Mutations
+  async createChecklist(input: CreateChecklistInput): Promise<IChecklist> {
+    const checklist = new Checklist({ ...input });
+    const result = await checklist.save();
+    return result;
+  }
+  async updateTodo(
+    _id: Scalars['ID'],
+    input: MongooseUpdateQuery<
+      Pick<
+        IChecklist,
+        'id' | 'title' | 'description' | 'priority' | 'status' | 'created'
+      >
+    >,
+  ): Promise<IChecklist> {
+    return (await Checklist.findOneAndUpdate({ _id }, input, {
+      new: true,
+    })) as IChecklist;
+  }
+  async deleteTodo(_id: Scalars['ID']): Promise<IChecklist> {
+    const checklist = (await Todo.findById({ _id })) as IChecklist;
+    await Checklist.deleteOne({ _id });
+    return checklist;
+  }
+}

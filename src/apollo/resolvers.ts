@@ -1,13 +1,10 @@
 import {
   Resolvers,
-	Todo,
-	Checklist,
+  Todo,
+  Checklist,
   QueryResolvers,
   MutationResolvers,
 } from '../generated/graphql';
-// import { ITodo } from '../mongoose/todo.interface';
-// import { Checklist } from '../mongoose/checklist.interface';
-
 
 const resolvers: Resolvers = {
   Query: {
@@ -15,9 +12,9 @@ const resolvers: Resolvers = {
       dataSources.todosAPI.getTodo(id),
     todos: (_, __, { dataSources }): Todo[] => dataSources.todosAPI.getTodos(),
     checklist: (_, { id }, { dataSources }): Checklist =>
-      dataSources.checklistAPI.getChecklist(id),
+      dataSources.checklistsAPI.getChecklist(id),
     checklists: (_, __, { dataSources }): Checklist[] =>
-      dataSources.checklistAPI.getChecklists(),
+      dataSources.checklistsAPI.getChecklists(),
   } as QueryResolvers,
   Mutation: {
     createTodo: async (_, { input }, { dataSources }): Promise<Todo> =>
@@ -30,14 +27,15 @@ const resolvers: Resolvers = {
       _,
       { input },
       { dataSources },
-    ): Promise<Checklist> => dataSources.checklistsAPI.createTodo(input),
+    ): Promise<Checklist> => dataSources.checklistsAPI.createChecklist(input),
     updateChecklist: async (
       _,
       { id, input },
       { dataSources },
-    ): Promise<Checklist> => dataSources.checklistsAPI.updateTodo(id, input),
+    ): Promise<Checklist> =>
+      dataSources.checklistsAPI.updateChecklist(id, input),
     deleteChecklist: async (_, { id }, { dataSources }): Promise<Checklist> =>
-      dataSources.checklistsAPI.deleteTodo(id),
+      dataSources.checklistsAPI.deleteChecklist(id),
   } as MutationResolvers,
 };
 

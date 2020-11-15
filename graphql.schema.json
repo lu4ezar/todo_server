@@ -79,7 +79,7 @@
       {
         "kind": "OBJECT",
         "name": "Todo",
-        "description": "Todo interface",
+        "description": "Todo type",
         "fields": [
           {
             "name": "id",

@@ -35,7 +35,7 @@ export enum Status {
   Expired = 'EXPIRED'
 }
 
-/** Todo interface */
+/** Todo type */
 export type Todo = {
   __typename?: 'Todo';
   id: Scalars['ID'];
