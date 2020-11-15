@@ -2,7 +2,7 @@
 import express from 'express';
 import { ApolloServer } from 'apollo-server-express';
 import typeDefs from './apollo/schema';
-import resolvers from './apollo/resolvers';
+import { Todos, Checklists } from './apollo/resolvers';
 import db from './mongoose/db';
 import TodoModel from './mongoose/todo.model';
 import ChecklistModel from './mongoose/checklist.model';
@@ -10,7 +10,7 @@ import { TodosAPI, ChecklistsAPI } from './apollo/datasource';
 
 const server = new ApolloServer({
   typeDefs,
-  resolvers,
+  resolvers: [Todos, Checklists],
   dataSources: () => ({
     todosAPI: new TodosAPI(TodoModel.collection),
     checklistsAPI: new ChecklistsAPI(ChecklistModel.collection),
