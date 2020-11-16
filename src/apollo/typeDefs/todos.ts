@@ -4,17 +4,18 @@ export default gql`
   """
   Todo type
   """
-	type Todo {
-		id: ID!
-		order: Int!
-		title: String!
-		description: String
-		priority: Priority!
-		status: Status!
-		created: DateTime!
-	}
+  type Todo {
+    id: ID!
+    order: Int!
+    title: String!
+    description: String
+    priority: Priority!
+    status: Status!
+    created: DateTime!
+    checklist: ID!
+  }
 
-	extend type Query {
+  extend type Query {
     todo(id: ID!): Todo
     todos: [Todo!]!
   }
@@ -24,9 +25,9 @@ export default gql`
     updateTodo(id: ID!, input: UpdateTodoInput!): Todo!
     deleteTodo(id: ID!): Todo!
     reorderTodos(id: ID!, order: Int!): Todo!
-	}
-	
-	input CreateTodoInput {
+  }
+
+  input CreateTodoInput {
     title: String!
     description: String
     priority: Priority
@@ -39,5 +40,4 @@ export default gql`
     priority: Priority
     status: Status
   }
-
 `;
