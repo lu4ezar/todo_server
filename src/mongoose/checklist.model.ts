@@ -3,6 +3,7 @@ import { IChecklist } from './checklist.interface';
 import { Priority, Status } from '../generated/graphql';
 
 const ChecklistSchema: Schema = new Schema({
+  order: Number,
   title: { type: String, required: true, unique: true },
   description: String,
   priority: { type: Priority },
