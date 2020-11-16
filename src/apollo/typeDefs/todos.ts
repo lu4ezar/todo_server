@@ -6,6 +6,7 @@ export default gql`
   """
 	type Todo {
 		id: ID!
+		order: Int!
 		title: String!
 		description: String
 		priority: Priority!
@@ -22,6 +23,7 @@ export default gql`
     createTodo(input: CreateTodoInput!): Todo!
     updateTodo(id: ID!, input: UpdateTodoInput!): Todo!
     deleteTodo(id: ID!): Todo!
+    reorderTodos(id: ID!, order: Int!): Todo!
 	}
 	
 	input CreateTodoInput {

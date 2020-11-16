@@ -7,6 +7,7 @@ export default gql`
 	
   type Checklist {
 		id: ID!
+		order: Int!
 		title: String!
 		description: String
 		priority: Priority!
@@ -24,6 +25,7 @@ export default gql`
     createChecklist(input: CreateChecklistInput!): Checklist!
     updateChecklist(id: ID!, input: UpdateChecklistInput!): Checklist!
     deleteChecklist(id: ID!): Checklist!
+    reorderChecklists(id: ID!, order: Int!): Checklist!
 	}
 	
 	input CreateChecklistInput {
