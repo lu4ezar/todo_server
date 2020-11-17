@@ -23,7 +23,7 @@ export default gql`
 
   extend type Mutation {
     createChecklist(input: CreateChecklistInput!): Checklist!
-    updateChecklist(id: ID!, input: UpdateChecklistInput!): Checklist!
+    updateChecklist(input: UpdateChecklistInput!): Checklist!
     deleteChecklist(id: ID!): Checklist!
     reorderChecklists(id: ID!, order: Int!): Checklist!
 	}
@@ -36,6 +36,7 @@ export default gql`
   }
 
   input UpdateChecklistInput {
+    id: ID!
     title: String
     description: String
     priority: Priority
