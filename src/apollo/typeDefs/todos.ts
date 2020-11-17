@@ -22,7 +22,7 @@ export default gql`
 
   extend type Mutation {
     createTodo(input: CreateTodoInput!): Todo!
-    updateTodo(id: ID!, input: UpdateTodoInput!): Todo!
+    updateTodo(input: UpdateTodoInput!): Todo!
     deleteTodo(id: ID!): Todo!
     reorderTodos(id: ID!, order: Int!): Todo!
   }
@@ -35,9 +35,15 @@ export default gql`
   }
 
   input UpdateTodoInput {
+    id: ID!
     title: String
     description: String
     priority: Priority
     status: Status
+  }
+
+  input ReorderTodoInput {
+    id: ID!
+    order: Int!
   }
 `;
