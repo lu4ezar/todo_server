@@ -3,32 +3,31 @@ import { gql } from 'apollo-server-express';
 export default gql`
   """
   Checklist Type
-	"""
-	
+  """
   type Checklist {
-		id: ID!
-		order: Int!
-		title: String!
-		description: String
-		priority: Priority!
-		status: Status!
-		created: DateTime!
+    id: ID!
+    order: Int!
+    title: String!
+    description: String
+    priority: Priority!
+    status: Status!
+    created: DateTime!
     todos: [Todo!]!
-	}
-	
-	extend type Query {
+  }
+
+  extend type Query {
     checklist(id: ID!): Checklist
     checklists: [Checklist!]!
   }
 
   extend type Mutation {
     createChecklist(input: CreateChecklistInput!): Checklist!
-    updateChecklist(id: ID!, input: UpdateChecklistInput!): Checklist!
+    updateChecklist(input: UpdateChecklistInput!): Checklist!
     deleteChecklist(id: ID!): Checklist!
     reorderChecklists(id: ID!, order: Int!): Checklist!
-	}
-	
-	input CreateChecklistInput {
+  }
+
+  input CreateChecklistInput {
     title: String!
     description: String
     priority: Priority
@@ -36,10 +35,10 @@ export default gql`
   }
 
   input UpdateChecklistInput {
+    id: ID!
     title: String
     description: String
     priority: Priority
     status: Status
   }
-
 `;
