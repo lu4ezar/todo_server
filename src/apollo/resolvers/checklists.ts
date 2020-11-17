@@ -16,12 +16,12 @@ const resolvers: Resolvers = {
     createChecklist: async (
       _,
       { input },
-      { dataSources },
+      { dataSources }
     ): Promise<Checklist> => dataSources.checklistsAPI.createChecklist(input),
     updateChecklist: async (
       _,
       { id, input },
-      { dataSources },
+      { dataSources }
     ): Promise<Checklist> =>
       dataSources.checklistsAPI.updateChecklist(id, input),
     deleteChecklist: async (_, { id }, { dataSources }): Promise<Checklist> =>

@@ -5,10 +5,10 @@ import db from './mongoose/db';
 import TodoModel from './mongoose/todo.model';
 import ChecklistModel from './mongoose/checklist.model';
 import { TodosAPI, ChecklistsAPI } from './apollo/datasource';
-import { schema } from './apollo/schema'
+import { schema } from './apollo/schema';
 
 const server = new ApolloServer({
-	schema,
+  schema,
   dataSources: () => ({
     todosAPI: new TodosAPI(TodoModel.collection),
     checklistsAPI: new ChecklistsAPI(ChecklistModel.collection),
@@ -23,7 +23,5 @@ const app = express();
 server.applyMiddleware({ app });
 
 app.listen({ port: process.env.PORT || 4000 }, () =>
-  console.log(
-    `server is listening. http://localhost:4000${server.graphqlPath}`,
-  ),
+  console.log(`server is listening. http://localhost:4000${server.graphqlPath}`)
 );

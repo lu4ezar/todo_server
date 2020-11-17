@@ -38,7 +38,7 @@ export class TodosAPI extends DataSource {
         ITodo,
         'id' | 'title' | 'description' | 'priority' | 'status' | 'created'
       >
-    >,
+    >
   ): Promise<ITodo> {
     return (await Todo.findOneAndUpdate({ _id }, input, {
       new: true,
@@ -65,8 +65,8 @@ export class ChecklistsAPI extends DataSource {
 
   async getChecklist(_id: Scalars['ID']): Promise<IChecklist> {
     return (await Checklist.findOne({ _id })) as IChecklist;
-	}
-	
+  }
+
   // Mutations
   async createChecklist(input: CreateChecklistInput): Promise<IChecklist> {
     const checklist = new Checklist({ ...input });
@@ -80,7 +80,7 @@ export class ChecklistsAPI extends DataSource {
         IChecklist,
         'id' | 'title' | 'description' | 'priority' | 'status' | 'created'
       >
-    >,
+    >
   ): Promise<IChecklist> {
     return (await Checklist.findOneAndUpdate({ _id }, input, {
       new: true,
