@@ -14,8 +14,8 @@ const resolvers: Resolvers = {
   Mutation: {
     createTodo: async (_, { input }, { dataSources }): Promise<Todo> =>
       dataSources.todosAPI.createTodo(input),
-    updateTodo: async (_, { id, input }, { dataSources }): Promise<Todo> =>
-      dataSources.todosAPI.updateTodo(id, input),
+    updateTodo: async (_, { input }, { dataSources }): Promise<Todo> =>
+      dataSources.todosAPI.updateTodo(input),
     deleteTodo: async (_, { id }, { dataSources }): Promise<Todo> =>
       dataSources.todosAPI.deleteTodo(id),
   } as MutationResolvers,
