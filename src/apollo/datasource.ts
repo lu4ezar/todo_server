@@ -36,7 +36,7 @@ export class TodosAPI extends DataSource {
     input: MongooseUpdateQuery<
       Pick<
         ITodo,
-        'id' | 'title' | 'description' | 'priority' | 'status' | 'created'
+        'title' | 'description' | 'priority' | 'completed' | 'expires'
       >
     >
   ): Promise<ITodo> {
@@ -78,7 +78,7 @@ export class ChecklistsAPI extends DataSource {
     input: MongooseUpdateQuery<
       Pick<
         IChecklist,
-        'id' | 'title' | 'description' | 'priority' | 'status' | 'created'
+        'title' | 'description' | 'priority' | 'completed' | 'expires'
       >
     >
   ): Promise<IChecklist> {

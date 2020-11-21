@@ -7,7 +7,7 @@ export interface ITodo extends Document {
   title: string;
   description: string;
   priority: string;
-  status: string;
+  completed: string;
   created: Date;
   expires: Date;
   checklist: IChecklist['_id'];

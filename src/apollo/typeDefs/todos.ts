@@ -10,8 +10,9 @@ export default gql`
     title: String!
     description: String
     priority: Priority!
-    status: Status!
+    completed: Boolean!
     created: DateTime!
+    expires: DateTime!
     checklist: ID!
   }
 
@@ -31,7 +32,7 @@ export default gql`
     title: String!
     description: String
     priority: Priority
-    status: Status
+    completed: Boolean!
   }
 
   input UpdateTodoInput {
@@ -39,7 +40,8 @@ export default gql`
     title: String
     description: String
     priority: Priority
-    status: Status
+    completed: Boolean
+    expires: DateTime!
   }
 
   input ReorderTodoInput {

@@ -7,7 +7,8 @@ export interface IChecklist extends Document {
   title: string;
   description: string;
   priority: string;
-  status: string;
+  completed: boolean;
   created: Date;
+  expires: Date;
   todos: Todo[];
 }
