@@ -6,8 +6,8 @@ const ChecklistSchema: Schema = new Schema({
   order: Number,
   title: { type: String, required: true, unique: true },
   description: String,
-  priority: { type: Priority },
-  completed: Boolean,
+  priority: { type: Priority, default: Priority.Normal },
+  completed: { type: Boolean, default: false },
   created: {
     type: Date,
     default: Date.now(),

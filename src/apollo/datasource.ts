@@ -17,7 +17,13 @@ export class TodosAPI extends DataSource {
     this.collection = collection;
   }
   // Queries
-  async getTodos(): Promise<Array<ITodo>> {
+  async getTodos(checklist: ITodo['checklist']): Promise<Array<ITodo>> {
+    if (checklist) {
+      const parentChecklist = await Checklist.findOne({
+        _id: checklist,
+      });
+      if (parentChecklist) return parentChecklist.todos;
+    }
     return Todo.find();
   }
 
@@ -27,12 +33,11 @@ export class TodosAPI extends DataSource {
 
   // Mutations
   async createTodo(input: CreateTodoInput): Promise<ITodo> {
-    const todo = new Todo({ ...input });
+    const todo = new Todo(input);
     const result = await todo.save();
     return result;
   }
   async updateTodo(
-    _id: Scalars['ID'],
     input: MongooseUpdateQuery<
       Pick<
         ITodo,
@@ -40,9 +45,15 @@ export class TodosAPI extends DataSource {
       >
     >
   ): Promise<ITodo> {
-    return (await Todo.findOneAndUpdate({ _id }, input, {
+    return (await Todo.findOneAndUpdate(input, {
       new: true,
     })) as ITodo;
+  }
+  async toggleTodo(_id: Scalars['ID']): Promise<ITodo> {
+    const todo = (await Todo.findById(_id)) as ITodo;
+    todo.completed = !todo.completed;
+    const result = await todo.save();
+    return result;
   }
   async deleteTodo(_id: Scalars['ID']): Promise<ITodo> {
     const todo = (await Todo.findById({ _id })) as ITodo;
@@ -73,8 +84,7 @@ export class ChecklistsAPI extends DataSource {
     const result = await checklist.save();
     return result;
   }
-  async updateTodo(
-    _id: Scalars['ID'],
+  async updateChecklist(
     input: MongooseUpdateQuery<
       Pick<
         IChecklist,
@@ -82,11 +92,11 @@ export class ChecklistsAPI extends DataSource {
       >
     >
   ): Promise<IChecklist> {
-    return (await Checklist.findOneAndUpdate({ _id }, input, {
+    return (await Checklist.findOneAndUpdate({ _id: input._id }, input, {
       new: true,
     })) as IChecklist;
   }
-  async deleteTodo(_id: Scalars['ID']): Promise<IChecklist> {
+  async deleteChecklist(_id: Scalars['ID']): Promise<IChecklist> {
     const checklist = (await Checklist.findById({ _id })) as IChecklist;
     await Checklist.deleteOne({ _id });
     return checklist;

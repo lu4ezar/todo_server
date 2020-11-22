@@ -1,4 +1,3 @@
-/* eslint-disable */
 import {
   GraphQLResolveInfo,
   GraphQLScalarType,
@@ -36,6 +35,10 @@ export type QueryTodoArgs = {
   id: Scalars['ID'];
 };
 
+export type QueryTodosArgs = {
+  checklist?: Maybe<Scalars['ID']>;
+};
+
 export type QueryChecklistArgs = {
   id: Scalars['ID'];
 };
@@ -44,6 +47,7 @@ export type Mutation = {
   __typename?: 'Mutation';
   createTodo: Todo;
   updateTodo: Todo;
+  toggleTodo: Todo;
   deleteTodo: Todo;
   reorderTodos: Todo;
   createChecklist: Checklist;
@@ -58,6 +62,10 @@ export type MutationCreateTodoArgs = {
 
 export type MutationUpdateTodoArgs = {
   input: UpdateTodoInput;
+};
+
+export type MutationToggleTodoArgs = {
+  id: Scalars['ID'];
 };
 
 export type MutationDeleteTodoArgs = {
@@ -102,15 +110,16 @@ export type Todo = {
   priority: Priority;
   completed: Scalars['Boolean'];
   created: Scalars['DateTime'];
-  expires: Scalars['DateTime'];
-  checklist: Scalars['ID'];
+  expires?: Maybe<Scalars['DateTime']>;
+  checklist?: Maybe<Scalars['ID']>;
 };
 
 export type CreateTodoInput = {
   title: Scalars['String'];
   description?: Maybe<Scalars['String']>;
   priority?: Maybe<Priority>;
-  completed: Scalars['Boolean'];
+  completed?: Maybe<Scalars['Boolean']>;
+  checklist?: Maybe<Scalars['ID']>;
 };
 
 export type UpdateTodoInput = {
@@ -119,7 +128,8 @@ export type UpdateTodoInput = {
   description?: Maybe<Scalars['String']>;
   priority?: Maybe<Priority>;
   completed?: Maybe<Scalars['Boolean']>;
-  expires: Scalars['DateTime'];
+  expires?: Maybe<Scalars['DateTime']>;
+  checklist?: Maybe<Scalars['ID']>;
 };
 
 export type ReorderTodoInput = {
@@ -414,7 +424,12 @@ export type QueryResolvers<
     ContextType,
     RequireFields<QueryTodoArgs, 'id'>
   >;
-  todos?: Resolver<Array<ResolversTypes['Todo']>, ParentType, ContextType>;
+  todos?: Resolver<
+    Array<ResolversTypes['Todo']>,
+    ParentType,
+    ContextType,
+    RequireFields<QueryTodosArgs, never>
+  >;
   checklist?: Resolver<
     Maybe<ResolversTypes['Checklist']>,
     ParentType,
@@ -443,6 +458,12 @@ export type MutationResolvers<
     ParentType,
     ContextType,
     RequireFields<MutationUpdateTodoArgs, 'input'>
+  >;
+  toggleTodo?: Resolver<
+    ResolversTypes['Todo'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationToggleTodoArgs, 'id'>
   >;
   deleteTodo?: Resolver<
     ResolversTypes['Todo'],
@@ -497,8 +518,12 @@ export type TodoResolvers<
   priority?: Resolver<ResolversTypes['Priority'], ParentType, ContextType>;
   completed?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   created?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
-  expires?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
-  checklist?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  expires?: Resolver<
+    Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
+  checklist?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 

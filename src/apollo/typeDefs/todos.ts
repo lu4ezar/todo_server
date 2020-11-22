@@ -12,18 +12,19 @@ export default gql`
     priority: Priority!
     completed: Boolean!
     created: DateTime!
-    expires: DateTime!
-    checklist: ID!
+    expires: DateTime
+    checklist: ID
   }
 
   extend type Query {
     todo(id: ID!): Todo
-    todos: [Todo!]!
+    todos(checklist: ID): [Todo!]!
   }
 
   extend type Mutation {
     createTodo(input: CreateTodoInput!): Todo!
     updateTodo(input: UpdateTodoInput!): Todo!
+    toggleTodo(id: ID!): Todo!
     deleteTodo(id: ID!): Todo!
     reorderTodos(id: ID!, order: Int!): Todo!
   }
@@ -32,7 +33,8 @@ export default gql`
     title: String!
     description: String
     priority: Priority
-    completed: Boolean!
+    completed: Boolean
+    checklist: ID
   }
 
   input UpdateTodoInput {
@@ -41,7 +43,8 @@ export default gql`
     description: String
     priority: Priority
     completed: Boolean
-    expires: DateTime!
+    expires: DateTime
+    checklist: ID
   }
 
   input ReorderTodoInput {
