@@ -57,7 +57,6 @@ export type MutationCreateTodoArgs = {
 };
 
 export type MutationUpdateTodoArgs = {
-  id: Scalars['ID'];
   input: UpdateTodoInput;
 };
 
@@ -75,7 +74,6 @@ export type MutationCreateChecklistArgs = {
 };
 
 export type MutationUpdateChecklistArgs = {
-  id: Scalars['ID'];
   input: UpdateChecklistInput;
 };
 
@@ -94,12 +92,6 @@ export enum Priority {
   High = 'HIGH',
 }
 
-export enum Status {
-  Active = 'ACTIVE',
-  Completed = 'COMPLETED',
-  Expired = 'EXPIRED',
-}
-
 /** Todo type */
 export type Todo = {
   __typename?: 'Todo';
@@ -108,8 +100,9 @@ export type Todo = {
   title: Scalars['String'];
   description?: Maybe<Scalars['String']>;
   priority: Priority;
-  status: Status;
+  completed: Scalars['Boolean'];
   created: Scalars['DateTime'];
+  expires: Scalars['DateTime'];
   checklist: Scalars['ID'];
 };
 
@@ -117,14 +110,21 @@ export type CreateTodoInput = {
   title: Scalars['String'];
   description?: Maybe<Scalars['String']>;
   priority?: Maybe<Priority>;
-  status?: Maybe<Status>;
+  completed: Scalars['Boolean'];
 };
 
 export type UpdateTodoInput = {
+  id: Scalars['ID'];
   title?: Maybe<Scalars['String']>;
   description?: Maybe<Scalars['String']>;
   priority?: Maybe<Priority>;
-  status?: Maybe<Status>;
+  completed?: Maybe<Scalars['Boolean']>;
+  expires: Scalars['DateTime'];
+};
+
+export type ReorderTodoInput = {
+  id: Scalars['ID'];
+  order: Scalars['Int'];
 };
 
 /** Checklist Type */
@@ -135,8 +135,9 @@ export type Checklist = {
   title: Scalars['String'];
   description?: Maybe<Scalars['String']>;
   priority: Priority;
-  status: Status;
+  completed: Scalars['Boolean'];
   created: Scalars['DateTime'];
+  expires: Scalars['DateTime'];
   todos: Array<Todo>;
 };
 
@@ -144,14 +145,16 @@ export type CreateChecklistInput = {
   title: Scalars['String'];
   description?: Maybe<Scalars['String']>;
   priority?: Maybe<Priority>;
-  status?: Maybe<Status>;
+  completed?: Maybe<Scalars['Boolean']>;
 };
 
 export type UpdateChecklistInput = {
+  id: Scalars['ID'];
   title?: Maybe<Scalars['String']>;
   description?: Maybe<Scalars['String']>;
   priority?: Maybe<Priority>;
-  status?: Maybe<Status>;
+  completed?: Maybe<Scalars['Boolean']>;
+  expires: Scalars['DateTime'];
 };
 
 export type AdditionalEntityFields = {
@@ -284,16 +287,16 @@ export type ResolversTypes = ResolversObject<{
   Mutation: ResolverTypeWrapper<{}>;
   Int: ResolverTypeWrapper<Scalars['Int']>;
   Priority: Priority;
-  Status: Status;
   Todo: ResolverTypeWrapper<Todo>;
   String: ResolverTypeWrapper<Scalars['String']>;
+  Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
   CreateTodoInput: CreateTodoInput;
   UpdateTodoInput: UpdateTodoInput;
+  ReorderTodoInput: ReorderTodoInput;
   Checklist: ResolverTypeWrapper<Checklist>;
   CreateChecklistInput: CreateChecklistInput;
   UpdateChecklistInput: UpdateChecklistInput;
   AdditionalEntityFields: AdditionalEntityFields;
-  Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
 }>;
 
 /** Mapping between all available schema types and the resolvers parents */
@@ -305,13 +308,14 @@ export type ResolversParentTypes = ResolversObject<{
   Int: Scalars['Int'];
   Todo: Todo;
   String: Scalars['String'];
+  Boolean: Scalars['Boolean'];
   CreateTodoInput: CreateTodoInput;
   UpdateTodoInput: UpdateTodoInput;
+  ReorderTodoInput: ReorderTodoInput;
   Checklist: Checklist;
   CreateChecklistInput: CreateChecklistInput;
   UpdateChecklistInput: UpdateChecklistInput;
   AdditionalEntityFields: AdditionalEntityFields;
-  Boolean: Scalars['Boolean'];
 }>;
 
 export type UnionDirectiveArgs = {
@@ -438,7 +442,7 @@ export type MutationResolvers<
     ResolversTypes['Todo'],
     ParentType,
     ContextType,
-    RequireFields<MutationUpdateTodoArgs, 'id' | 'input'>
+    RequireFields<MutationUpdateTodoArgs, 'input'>
   >;
   deleteTodo?: Resolver<
     ResolversTypes['Todo'],
@@ -462,7 +466,7 @@ export type MutationResolvers<
     ResolversTypes['Checklist'],
     ParentType,
     ContextType,
-    RequireFields<MutationUpdateChecklistArgs, 'id' | 'input'>
+    RequireFields<MutationUpdateChecklistArgs, 'input'>
   >;
   deleteChecklist?: Resolver<
     ResolversTypes['Checklist'],
@@ -491,8 +495,9 @@ export type TodoResolvers<
     ContextType
   >;
   priority?: Resolver<ResolversTypes['Priority'], ParentType, ContextType>;
-  status?: Resolver<ResolversTypes['Status'], ParentType, ContextType>;
+  completed?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   created?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
+  expires?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
   checklist?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
@@ -510,8 +515,9 @@ export type ChecklistResolvers<
     ContextType
   >;
   priority?: Resolver<ResolversTypes['Priority'], ParentType, ContextType>;
-  status?: Resolver<ResolversTypes['Status'], ParentType, ContextType>;
+  completed?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   created?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
+  expires?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
   todos?: Resolver<Array<ResolversTypes['Todo']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
