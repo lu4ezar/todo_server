@@ -7,7 +7,7 @@ import ChecklistModel from './mongoose/checklist.model';
 import { TodosAPI, ChecklistsAPI } from './apollo/datasource';
 import { schema } from './apollo/schema';
 
-const server = new ApolloServer({
+export const server = new ApolloServer({
   schema,
   dataSources: () => ({
     todosAPI: new TodosAPI(TodoModel.collection),
