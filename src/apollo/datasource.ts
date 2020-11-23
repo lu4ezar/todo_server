@@ -35,6 +35,13 @@ export class TodosAPI extends DataSource {
   async createTodo(input: CreateTodoInput): Promise<ITodo> {
     const todo = new Todo(input);
     const result = await todo.save();
+    if (input.checklist) {
+      const checklist = (await Checklist.findOne({
+        _id: input.checklist,
+      })) as IChecklist;
+      checklist.todos = [...checklist.todos, result];
+      await checklist.save();
+    }
     return result;
   }
   async updateTodo(
@@ -80,7 +87,7 @@ export class ChecklistsAPI extends DataSource {
 
   // Mutations
   async createChecklist(input: CreateChecklistInput): Promise<IChecklist> {
-    const checklist = new Checklist({ ...input });
+    const checklist = new Checklist(input);
     const result = await checklist.save();
     return result;
   }
