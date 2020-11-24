@@ -18,13 +18,16 @@ export default class TodosAPI extends DataSource {
       const parentChecklist = await Checklist.findOne({
         _id: checklist,
       });
-      if (parentChecklist) return parentChecklist.todos;
+      if (parentChecklist) {
+        return parentChecklist.todos;
+      }
     }
-    return Todo.find();
+    return await Todo.find();
   }
 
   async getTodo(_id: Scalars['ID']): Promise<ITodo> {
-    return (await Todo.findOne({ _id })) as ITodo;
+    const todo = (await Todo.findOne({ _id })) as ITodo;
+    return todo;
   }
 
   // Mutations
