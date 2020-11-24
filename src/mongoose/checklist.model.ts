@@ -1,4 +1,5 @@
-import { model, Schema } from 'mongoose';
+import mongoose from 'mongoose';
+const Schema = mongoose.Schema;
 import { IChecklist } from './checklist.interface';
 import { Priority } from '../generated/graphql';
 
@@ -13,7 +14,7 @@ const ChecklistSchema: Schema = new Schema({
     default: Date.now(),
   },
   expires: Date,
-  todos: { type: Array, default: [] },
+  todos: [{ type: Schema.Types.ObjectId, ref: 'Todo' }],
 });
 
 export default model<IChecklist>('Checklist', ChecklistSchema);

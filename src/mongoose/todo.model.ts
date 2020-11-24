@@ -15,7 +15,7 @@ const TodoSchema: Schema = new Schema({
   },
   checklist: {
     type: Schema.Types.ObjectId,
-    required: true,
+    ref: 'Checklist',
   },
 });
 
