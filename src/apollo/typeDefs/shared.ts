@@ -15,10 +15,4 @@ export default gql`
     NORMAL
     HIGH
   }
-
-  enum Status {
-    ACTIVE
-    COMPLETED
-    EXPIRED
-  }
 `;

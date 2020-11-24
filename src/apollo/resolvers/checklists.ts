@@ -20,10 +20,9 @@ const resolvers: Resolvers = {
     ): Promise<Checklist> => dataSources.checklistsAPI.createChecklist(input),
     updateChecklist: async (
       _,
-      { id, input },
+      { input },
       { dataSources }
-    ): Promise<Checklist> =>
-      dataSources.checklistsAPI.updateChecklist(id, input),
+    ): Promise<Checklist> => dataSources.checklistsAPI.updateChecklist(input),
     deleteChecklist: async (_, { id }, { dataSources }): Promise<Checklist> =>
       dataSources.checklistsAPI.deleteChecklist(id),
   } as MutationResolvers,
