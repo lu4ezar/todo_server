@@ -2,7 +2,6 @@ import mongoose from 'mongoose';
 import bcrypt from 'bcryptjs';
 import { validate } from 'isemail';
 import { IUser } from './user.interface';
-// import { User } from '../generated/graphql';
 
 const { model, Schema } = mongoose;
 
@@ -36,20 +35,6 @@ UserSchema.pre<IUser>('save', async function save(next) {
     return next(err);
   }
 });
-
-/* bcrypt.compare(req.body.password, user.password, function(err, res) {
-  if (err){
-    // handle error
-  }
-  if (res)
-    // Send JWT
-  } else {
-    // response is OutgoingMessage object that server response http request
-    return response.json({success: false, message: 'passwords do not match'});
-  }
-});
-
-*/
 
 UserSchema.methods.validatePassword = async function validatePassword(
   data: string
