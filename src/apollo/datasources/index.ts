@@ -1,7 +1,5 @@
-import TodosAPI from './todos.ts';
-import ChecklistsAPI from './checklists.ts';
+import TodosAPI from './todos';
+import ChecklistsAPI from './checklists';
+import UsersAPI from './users';
 
-export default () => ({
-  todosAPI: new TodosAPI(TodoModel.collection),
-  checklistsAPI: new ChecklistsAPI(ChecklistModel.collection),
-});
+export { TodosAPI, ChecklistsAPI, UsersAPI };

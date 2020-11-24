@@ -2,31 +2,35 @@
 import express from 'express';
 import { ApolloServer } from 'apollo-server-express';
 import db from './mongoose/db';
-// import TodoModel from './mongoose/todo.model';
-// import ChecklistModel from './mongoose/checklist.model';
-// import { TodosAPI, ChecklistsAPI } from './apollo/datasource';
+import { TodoModel, ChecklistModel, UserModel } from './mongoose';
+import { TodosAPI, ChecklistsAPI, UsersAPI } from './apollo/datasources';
 import { schema } from './apollo/schema';
-import datasources from './apollo/datasources';
 
-const authMiddleware = (request, response, next) => {
-  const token = request.get('authorization');
-  const user = loadUser(token);
-  if (user) {
-    request.user = user;
-    next();
-  }
-  response.status(401).end();
-};
+// const authMiddleware = (request, response, next) => {
+//   // const token = request.get('authorization');
+//   // const user = getUser(token);
+//   const user = {};
+//   if (user) {
+//     request.user = user;
+//     next();
+//   }
+//   response.status(401).end();
+// };
 
 const server = new ApolloServer({
   schema,
-  datasources,
+  dataSources: () => ({
+    todosAPI: new TodosAPI(TodoModel.collection),
+    checklistsAPI: new ChecklistsAPI(ChecklistModel.collection),
+    usersAPI: new UsersAPI(UserModel.collection),
+  }),
   context: async () => db,
   playground: true,
   introspection: true,
 });
 
-const app = express(authMiddleware);
+const app = express();
+// app.use(authMiddleware);
 
 server.applyMiddleware({ app });
 

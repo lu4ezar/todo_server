@@ -1,9 +1,10 @@
 import mongoose from 'mongoose';
-const Schema = mongoose.Schema;
 import { ITodo } from './todo.interface';
 import { Priority } from '../generated/graphql';
 
-const TodoSchema: Schema = new Schema({
+const { model, Schema } = mongoose;
+
+const TodoSchema = new Schema({
   order: Number,
   title: { type: String, required: true, unique: true },
   description: String,

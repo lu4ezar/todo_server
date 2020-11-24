@@ -29,6 +29,7 @@ export type Query = {
   todos: Array<Todo>;
   checklist?: Maybe<Checklist>;
   checklists: Array<Checklist>;
+  me: User;
 };
 
 export type QueryTodoArgs = {
@@ -43,6 +44,10 @@ export type QueryChecklistArgs = {
   id: Scalars['ID'];
 };
 
+export type QueryMeArgs = {
+  email: Scalars['String'];
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   createTodo: Todo;
@@ -54,6 +59,9 @@ export type Mutation = {
   updateChecklist: Checklist;
   deleteChecklist: Checklist;
   reorderChecklists: Checklist;
+  createUser: User;
+  updateUser: User;
+  deleteUser: User;
 };
 
 export type MutationCreateTodoArgs = {
@@ -92,6 +100,18 @@ export type MutationDeleteChecklistArgs = {
 export type MutationReorderChecklistsArgs = {
   id: Scalars['ID'];
   order: Scalars['Int'];
+};
+
+export type MutationCreateUserArgs = {
+  input: CreateUserInput;
+};
+
+export type MutationUpdateUserArgs = {
+  input: UpdateUserInput;
+};
+
+export type MutationDeleteUserArgs = {
+  email: Scalars['String'];
 };
 
 export enum Priority {
@@ -165,6 +185,25 @@ export type UpdateChecklistInput = {
   priority?: Maybe<Priority>;
   completed?: Maybe<Scalars['Boolean']>;
   expires: Scalars['DateTime'];
+};
+
+/** User Type */
+export type User = {
+  __typename?: 'User';
+  id: Scalars['ID'];
+  email: Scalars['String'];
+  hashedPassword: Scalars['String'];
+  created: Scalars['DateTime'];
+};
+
+export type CreateUserInput = {
+  email: Scalars['String'];
+  hashedPassword: Scalars['String'];
+};
+
+export type UpdateUserInput = {
+  email: Scalars['String'];
+  hashedPassword: Scalars['String'];
 };
 
 export type AdditionalEntityFields = {
@@ -294,11 +333,11 @@ export type ResolversTypes = ResolversObject<{
   DateTime: ResolverTypeWrapper<Scalars['DateTime']>;
   Query: ResolverTypeWrapper<{}>;
   ID: ResolverTypeWrapper<Scalars['ID']>;
+  String: ResolverTypeWrapper<Scalars['String']>;
   Mutation: ResolverTypeWrapper<{}>;
   Int: ResolverTypeWrapper<Scalars['Int']>;
   Priority: Priority;
   Todo: ResolverTypeWrapper<Todo>;
-  String: ResolverTypeWrapper<Scalars['String']>;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
   CreateTodoInput: CreateTodoInput;
   UpdateTodoInput: UpdateTodoInput;
@@ -306,6 +345,9 @@ export type ResolversTypes = ResolversObject<{
   Checklist: ResolverTypeWrapper<Checklist>;
   CreateChecklistInput: CreateChecklistInput;
   UpdateChecklistInput: UpdateChecklistInput;
+  User: ResolverTypeWrapper<User>;
+  CreateUserInput: CreateUserInput;
+  UpdateUserInput: UpdateUserInput;
   AdditionalEntityFields: AdditionalEntityFields;
 }>;
 
@@ -314,10 +356,10 @@ export type ResolversParentTypes = ResolversObject<{
   DateTime: Scalars['DateTime'];
   Query: {};
   ID: Scalars['ID'];
+  String: Scalars['String'];
   Mutation: {};
   Int: Scalars['Int'];
   Todo: Todo;
-  String: Scalars['String'];
   Boolean: Scalars['Boolean'];
   CreateTodoInput: CreateTodoInput;
   UpdateTodoInput: UpdateTodoInput;
@@ -325,6 +367,9 @@ export type ResolversParentTypes = ResolversObject<{
   Checklist: Checklist;
   CreateChecklistInput: CreateChecklistInput;
   UpdateChecklistInput: UpdateChecklistInput;
+  User: User;
+  CreateUserInput: CreateUserInput;
+  UpdateUserInput: UpdateUserInput;
   AdditionalEntityFields: AdditionalEntityFields;
 }>;
 
@@ -441,6 +486,12 @@ export type QueryResolvers<
     ParentType,
     ContextType
   >;
+  me?: Resolver<
+    ResolversTypes['User'],
+    ParentType,
+    ContextType,
+    RequireFields<QueryMeArgs, 'email'>
+  >;
 }>;
 
 export type MutationResolvers<
@@ -501,6 +552,24 @@ export type MutationResolvers<
     ContextType,
     RequireFields<MutationReorderChecklistsArgs, 'id' | 'order'>
   >;
+  createUser?: Resolver<
+    ResolversTypes['User'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationCreateUserArgs, 'input'>
+  >;
+  updateUser?: Resolver<
+    ResolversTypes['User'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationUpdateUserArgs, 'input'>
+  >;
+  deleteUser?: Resolver<
+    ResolversTypes['User'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationDeleteUserArgs, 'email'>
+  >;
 }>;
 
 export type TodoResolvers<
@@ -547,12 +616,24 @@ export type ChecklistResolvers<
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
+export type UserResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['User'] = ResolversParentTypes['User']
+> = ResolversObject<{
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  email?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  hashedPassword?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  created?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
 export type Resolvers<ContextType = any> = ResolversObject<{
   DateTime?: GraphQLScalarType;
   Query?: QueryResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;
   Todo?: TodoResolvers<ContextType>;
   Checklist?: ChecklistResolvers<ContextType>;
+  User?: UserResolvers<ContextType>;
 }>;
 
 /**
