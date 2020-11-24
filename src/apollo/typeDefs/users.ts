@@ -9,13 +9,11 @@ export default gql`
 		id: ID!
 		email: String!
 		hashedPassword: String!
-		roles: [String!]!
 		created: DateTime!
 	}
 	
 	extend type Query {
     me: User!
-    users: [User!]!
   }
 
   extend type Mutation {
