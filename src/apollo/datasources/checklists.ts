@@ -13,17 +13,16 @@ export default class ChecklistsAPI extends DataSource {
 
   // Queries
   async getChecklists(): Promise<Array<IChecklist>> {
-    return Checklist.find();
+    return await Checklist.find();
   }
 
   async getChecklist(_id: Scalars['ID']): Promise<IChecklist> {
     return (await Checklist.findOne({ _id })) as IChecklist;
   }
   // Mutations
-  async createChecklist(input: CreateChecklistInput): Promise<IChecklist> {
+  createChecklist(input: CreateChecklistInput): Promise<IChecklist> {
     const checklist = new Checklist(input);
-    const result = await checklist.save();
-    return result;
+    return checklist.save();
   }
   async updateChecklist(
     input: MongooseUpdateQuery<
