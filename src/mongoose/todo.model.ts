@@ -1,4 +1,5 @@
-import { model, Schema } from 'mongoose';
+import mongoose from 'mongoose';
+const Schema = mongoose.Schema;
 import { ITodo } from './todo.interface';
 import { Priority } from '../generated/graphql';
 

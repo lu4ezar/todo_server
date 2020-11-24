@@ -8,6 +8,16 @@ import db from './mongoose/db';
 import { schema } from './apollo/schema';
 import datasources from './apollo/datasources';
 
+const authMiddleware = (request, response, next) => {
+  const token = request.get('authorization');
+  const user = loadUser(token);
+  if (user) {
+    request.user = user;
+    next();
+  }
+  response.status(401).end();
+};
+
 const server = new ApolloServer({
   schema,
   datasources,
@@ -16,7 +26,7 @@ const server = new ApolloServer({
   introspection: true,
 });
 
-const app = express();
+const app = express(authMiddleware);
 
 server.applyMiddleware({ app });
 

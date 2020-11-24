@@ -11,5 +11,5 @@ export interface IChecklist extends Document {
   completed: boolean;
   created: Date;
   expires: Date;
-  todos: ITodo[];
+  todos: ITodo['_id'][];
 }
