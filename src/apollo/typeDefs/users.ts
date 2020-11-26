@@ -12,13 +12,13 @@ export default gql`
   }
 
   extend type Query {
-    me: User!
+    me(email: String!): User!
   }
 
   extend type Mutation {
     createUser(input: CreateUserInput!): User!
     updateUser(input: UpdateUserInput!): User!
-    deleteUser(id: ID!): User!
+    deleteUser(email: String!): User!
   }
 
   input CreateUserInput {

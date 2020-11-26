@@ -6,4 +6,5 @@ export interface IUser extends Document {
   created: Date;
   checklists: IChecklist['_id'][];
   hashedPassword: string;
+  validatePassword: (String): Boolean
 }
