@@ -31,7 +31,7 @@ export default class UsersAPI extends DataSource {
   }
   async deleteUser(email: Scalars['String']): Promise<IUser> {
     const user = (await User.findOne({ email })) as IUser;
-    await User.deleteOne({ email });
+    User.deleteOne({ email });
     return user;
   }
 }
