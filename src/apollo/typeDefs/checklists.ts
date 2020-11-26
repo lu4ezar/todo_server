@@ -4,16 +4,16 @@ export default gql`
   """
   Checklist Type
   """
-  type Checklist {
+  type Checklist @entity {
     id: ID!
     order: Int!
-    title: String!
+    title: String! @column
     description: String
     priority: Priority!
     completed: Boolean!
     created: DateTime!
     expires: DateTime!
-    todos: [Todo!]!
+    todos: [Todo!]! @embedded
   }
 
   extend type Query {
