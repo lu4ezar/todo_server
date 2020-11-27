@@ -23,6 +23,11 @@ export type Scalars = {
   DateTime: any;
 };
 
+export type AdditionalEntityFields = {
+  path?: Maybe<Scalars['String']>;
+  type?: Maybe<Scalars['String']>;
+};
+
 export type Query = {
   __typename?: 'Query';
   todo?: Maybe<Todo>;
@@ -167,11 +172,6 @@ export type UpdateChecklistInput = {
   expires: Scalars['DateTime'];
 };
 
-export type AdditionalEntityFields = {
-  path?: Maybe<Scalars['String']>;
-  type?: Maybe<Scalars['String']>;
-};
-
 export type WithIndex<TObject> = TObject & Record<string, any>;
 export type ResolversObject<TObject> = WithIndex<TObject>;
 
@@ -291,6 +291,8 @@ export type DirectiveResolverFn<
 
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = ResolversObject<{
+  AdditionalEntityFields: AdditionalEntityFields;
+  String: ResolverTypeWrapper<Scalars['String']>;
   DateTime: ResolverTypeWrapper<Scalars['DateTime']>;
   Query: ResolverTypeWrapper<{}>;
   ID: ResolverTypeWrapper<Scalars['ID']>;
@@ -298,7 +300,6 @@ export type ResolversTypes = ResolversObject<{
   Int: ResolverTypeWrapper<Scalars['Int']>;
   Priority: Priority;
   Todo: ResolverTypeWrapper<Todo>;
-  String: ResolverTypeWrapper<Scalars['String']>;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
   CreateTodoInput: CreateTodoInput;
   UpdateTodoInput: UpdateTodoInput;
@@ -306,18 +307,18 @@ export type ResolversTypes = ResolversObject<{
   Checklist: ResolverTypeWrapper<Checklist>;
   CreateChecklistInput: CreateChecklistInput;
   UpdateChecklistInput: UpdateChecklistInput;
-  AdditionalEntityFields: AdditionalEntityFields;
 }>;
 
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = ResolversObject<{
+  AdditionalEntityFields: AdditionalEntityFields;
+  String: Scalars['String'];
   DateTime: Scalars['DateTime'];
   Query: {};
   ID: Scalars['ID'];
   Mutation: {};
   Int: Scalars['Int'];
   Todo: Todo;
-  String: Scalars['String'];
   Boolean: Scalars['Boolean'];
   CreateTodoInput: CreateTodoInput;
   UpdateTodoInput: UpdateTodoInput;
@@ -325,7 +326,6 @@ export type ResolversParentTypes = ResolversObject<{
   Checklist: Checklist;
   CreateChecklistInput: CreateChecklistInput;
   UpdateChecklistInput: UpdateChecklistInput;
-  AdditionalEntityFields: AdditionalEntityFields;
 }>;
 
 export type UnionDirectiveArgs = {
@@ -579,3 +579,12 @@ export type IDirectiveResolvers<ContextType = any> = DirectiveResolvers<
   ContextType
 >;
 import { ObjectID } from 'mongodb';
+export type TodoDbObject = {
+  title: string;
+  description?: Maybe<string>;
+};
+
+export type ChecklistDbObject = {
+  title: string;
+  todos: Array<TodoDbObject>;
+};

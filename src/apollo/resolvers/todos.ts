@@ -10,17 +10,15 @@ const resolvers: Resolvers = {
   Query: {
     todo: (_, { id }, { dataSources }): ITodo =>
       dataSources.todosAPI.getTodo(id),
-    todos: (
+    todos: async (
       _,
       { checklist }: { checklist: Todo['checklist'] },
       { dataSources }
-    ): ITodo[] => {
-      const todos = dataSources.todosAPI.getTodos();
+    ): Promise<ITodo[]> => {
       if (!checklist) {
-        return todos;
+        return await dataSources.todosAPI.getTodos();
       }
-      const chck = dataSources.checklistAPI.getChecklist(checklist);
-      return chck.todos;
+      return await dataSources.checklistsAPI.getChecklist(checklist).todos;
     },
   } as QueryResolvers,
   Mutation: {

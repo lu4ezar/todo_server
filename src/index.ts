@@ -4,7 +4,7 @@ import { ApolloServer } from 'apollo-server-express';
 import db from './mongoose/db';
 import TodoModel from './mongoose/todo.model';
 import ChecklistModel from './mongoose/checklist.model';
-import { TodosAPI, ChecklistsAPI } from './apollo/datasource';
+import { TodosAPI, ChecklistsAPI } from './apollo/datasources';
 import { schema } from './apollo/schema';
 
 export const server = new ApolloServer({
