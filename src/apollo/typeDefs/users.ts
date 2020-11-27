@@ -11,12 +11,17 @@ export default gql`
     created: DateTime!
   }
 
+  type Token {
+    token: String!
+  }
+
   extend type Query {
     me(email: String!): User!
   }
 
   extend type Mutation {
-    createUser(input: CreateUserInput!): User!
+    createUser(input: CreateUserInput!): Token!
+    loginUser(input: CreateUserInput!): Token!
     updateUser(input: UpdateUserInput!): User!
     deleteUser(email: String!): User!
   }
