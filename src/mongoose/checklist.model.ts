@@ -1,5 +1,4 @@
-import mongoose from 'mongoose';
-const Schema = mongoose.Schema;
+import { model, Schema } from 'mongoose';
 import { IChecklist } from './checklist.interface';
 import { Priority } from '../generated/graphql';
 
