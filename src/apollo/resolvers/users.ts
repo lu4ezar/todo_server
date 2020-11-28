@@ -18,8 +18,8 @@ const resolvers: Resolvers = {
       dataSources.usersAPI.loginUser(input),
     updateUser: async (_, { input }, { dataSources }): Promise<IUser> =>
       dataSources.usersAPI.updateUser(input),
-    /* deleteUser: async (_, { email }, { dataSources }): Promise<IUser> =>
-      dataSources.usersAPI.deleteUser(email),*/
+    deleteUser: async (_, { email }, { dataSources }): Promise<IUser> =>
+      dataSources.usersAPI.deleteUser(email),
   } as MutationResolvers,
 };
 

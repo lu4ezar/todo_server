@@ -8,7 +8,7 @@ import {
   Scalars,
   UpdateUserInput,
 } from '../../generated/graphql';
-// import { Token } from 'graphql';
+import { Token } from 'graphql';
 
 export default class UsersAPI extends DataSource {
   collection: Collection;
@@ -26,7 +26,7 @@ export default class UsersAPI extends DataSource {
     const user = new User(input);
     return await user.save();
   }
-  async authUser(input: { email: string; password: string }) {
+  async authUser(input: { email: string; password: string }): Promise<Token> {
     const { email, password } = input;
     const user = await User.findOne({ email });
     if (!user) throw new Error('cannot login');
