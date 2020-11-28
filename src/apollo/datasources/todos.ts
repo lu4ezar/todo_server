@@ -4,7 +4,11 @@ import { ITodo } from '../../mongoose/todo.interface';
 import { IChecklist } from '../../mongoose/checklist.interface';
 import Todo from '../../mongoose/todo.model';
 import Checklist from '../../mongoose/checklist.model';
-import { CreateTodoInput, Scalars } from '../../generated/graphql';
+import {
+  CreateTodoInput,
+  Scalars,
+  Todo as TodoT,
+} from '../../generated/graphql';
 
 export default class TodosAPI extends DataSource {
   collection: Collection;
@@ -33,6 +37,7 @@ export default class TodosAPI extends DataSource {
   // Mutations
   async createTodo(input: CreateTodoInput): Promise<ITodo> {
     const todo = new Todo(input);
+    console.log(todo);
     const result = await todo.save();
     if (input.checklist) {
       const checklist = (await Checklist.findOne({
@@ -41,13 +46,16 @@ export default class TodosAPI extends DataSource {
       checklist.todos = [...checklist.todos, result];
       await checklist.save();
     }
+    console.log(result);
     return result;
   }
 
   async toggleTodo(_id: Scalars['ID']): Promise<ITodo> {
+    console.log(_id);
     const todo = (await Todo.findById(_id)) as ITodo;
     todo.completed = !todo.completed;
     const result = await todo.save();
+    console.log(result);
     return result;
   }
   async deleteTodo(_id: Scalars['ID']): Promise<ITodo> {

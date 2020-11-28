@@ -1,5 +1,5 @@
 import { Document } from 'mongoose';
-import { Priority, Scalars } from '../generated/graphql';
+import { Priority, Scalars, Todo } from '../generated/graphql';
 import { ITodo } from './todo.interface';
 
 export interface IChecklist extends Document {

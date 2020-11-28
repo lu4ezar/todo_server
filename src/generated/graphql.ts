@@ -498,12 +498,6 @@ export type QueryResolvers<
     ParentType,
     ContextType
   >;
-  me?: Resolver<
-    ResolversTypes['User'],
-    ParentType,
-    ContextType,
-    RequireFields<QueryMeArgs, 'email'>
-  >;
 }>;
 
 export type MutationResolvers<
@@ -563,30 +557,6 @@ export type MutationResolvers<
     ParentType,
     ContextType,
     RequireFields<MutationReorderChecklistsArgs, 'id' | 'order'>
-  >;
-  createUser?: Resolver<
-    ResolversTypes['Token'],
-    ParentType,
-    ContextType,
-    RequireFields<MutationCreateUserArgs, 'input'>
-  >;
-  loginUser?: Resolver<
-    ResolversTypes['Token'],
-    ParentType,
-    ContextType,
-    RequireFields<MutationLoginUserArgs, 'input'>
-  >;
-  updateUser?: Resolver<
-    ResolversTypes['User'],
-    ParentType,
-    ContextType,
-    RequireFields<MutationUpdateUserArgs, 'input'>
-  >;
-  deleteUser?: Resolver<
-    ResolversTypes['User'],
-    ParentType,
-    ContextType,
-    RequireFields<MutationDeleteUserArgs, 'email'>
   >;
 }>;
 
