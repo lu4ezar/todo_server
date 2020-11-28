@@ -26,7 +26,10 @@ export default class UsersAPI extends DataSource {
     const user = new User(input);
     return await user.save();
   }
-  async authUser(input: { email: string; password: string }): Promise<Token> {
+  async authUser(input: {
+    email: string;
+    password: string;
+  }): Promise<Token | null> {
     const { email, password } = input;
     const user = await User.findOne({ email });
     if (!user) throw new Error('cannot login');
@@ -37,6 +40,7 @@ export default class UsersAPI extends DataSource {
       };
       return token;
     }
+    return null;
   }
   async updateUser(input: UpdateUserInput): Promise<IUser> {
     return (await User.findOneAndUpdate({ email: input.email }, input, {

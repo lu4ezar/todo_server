@@ -565,10 +565,16 @@ export type MutationResolvers<
     RequireFields<MutationReorderChecklistsArgs, 'id' | 'order'>
   >;
   createUser?: Resolver<
-    ResolversTypes['User'],
+    ResolversTypes['Token'],
     ParentType,
     ContextType,
     RequireFields<MutationCreateUserArgs, 'input'>
+  >;
+  loginUser?: Resolver<
+    ResolversTypes['Token'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationLoginUserArgs, 'input'>
   >;
   updateUser?: Resolver<
     ResolversTypes['User'],
