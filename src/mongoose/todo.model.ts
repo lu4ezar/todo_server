@@ -1,10 +1,11 @@
 import { model, Schema } from 'mongoose';
 import { ITodo } from './todo.interface';
 import { Priority } from '../generated/graphql';
+import Checklist from './checklist.model';
 
-const TodoSchema: Schema = new Schema({
+const TodoSchema: Schema = new Schema<ITodo>({
   order: Number,
-  title: { type: String, required: true, unique: true },
+  title: { type: String, required: true, unique: false },
   description: String,
   priority: { type: Priority, default: Priority.Normal },
   completed: { type: Boolean, default: false },
@@ -16,7 +17,8 @@ const TodoSchema: Schema = new Schema({
   checklist: {
     type: Schema.Types.ObjectId,
     ref: 'Checklist',
+    unique: false,
   },
 });
 
-export default model<ITodo>('Todo', TodoSchema);
+TodoSchema.index({ title: 1, checklist: 1 }, { unique: true });
