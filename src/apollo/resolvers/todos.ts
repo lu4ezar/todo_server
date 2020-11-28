@@ -28,6 +28,8 @@ const resolvers: Resolvers = {
       dataSources.todosAPI.updateTodo(input),
     deleteTodo: async (_, { id }, { dataSources }): Promise<Todo> =>
       dataSources.todosAPI.deleteTodo(id),
+    toggleTodo: async (_, { id }, { dataSources }): Promise<Todo> =>
+      dataSources.todosAPI.toggleTodo(id),
   } as MutationResolvers,
 };
 
