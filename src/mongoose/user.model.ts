@@ -42,7 +42,8 @@ UserSchema.methods.validatePassword = async function validatePassword(
   return bcrypt.compare(data, this.password);
 };
 
-export interface UserModel extends Model<IUser> {
+export interface IUserModel extends Model<IUser> {
   validatePassword(data: string): Promise<boolean>;
 }
-export default model<IUser, UserModel>('User', UserSchema);
+
+export default model<IUser, IUserModel>('User', UserSchema);

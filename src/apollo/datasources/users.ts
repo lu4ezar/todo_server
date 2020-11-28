@@ -7,8 +7,8 @@ import {
   CreateUserInput,
   Scalars,
   UpdateUserInput,
-  User as UserType
 } from '../../generated/graphql';
+// import { Token } from 'graphql';
 
 export default class UsersAPI extends DataSource {
   collection: Collection;
@@ -18,9 +18,9 @@ export default class UsersAPI extends DataSource {
   }
 
   // Queries
-  async getUser(email: Scalars['String']): Promise<IUser> {
-    return (await User.findOne({ email })) as IUser;
-  }
+  // async getUser(email: Scalars['String']): Promise<IUser> {
+  //   return (await User.findOne({ email })) as IUser;
+  // }
   // Mutations
   async createUser(input: CreateUserInput): Promise<IUser> {
     const user = new User(input);
@@ -29,11 +29,14 @@ export default class UsersAPI extends DataSource {
   async authUser(input: { email: string; password: string }) {
     const { email, password } = input;
     const user = await User.findOne({ email });
+    if (!user) throw new Error('cannot login');
     console.log(typeof user);
-    /* if (user?.validatePassword(password)) {
-      const token = jwt.sign(user, 'supersecret');
-      return { token };
-    }*/
+    if (user && user.validatePassword(password)) {
+      const token = {
+        token: jwt.sign({ email: user.email }, 'supersecret'),
+      };
+      return token;
+    }
   }
   async updateUser(input: UpdateUserInput): Promise<IUser> {
     return (await User.findOneAndUpdate({ email: input.email }, input, {

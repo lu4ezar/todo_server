@@ -13,7 +13,7 @@ const resolvers: Resolvers = {
   } as QueryResolvers,
   Mutation: {
     createUser: async (_, { input }, { dataSources }): Promise<Token> =>
-      dataSources.usersAPI.createUsers(input),
+      dataSources.usersAPI.createUser(input),
     loginUser: async (_, { input }, { dataSources }): Promise<Token> =>
       dataSources.usersAPI.loginUser(input),
     updateUser: async (_, { input }, { dataSources }): Promise<IUser> =>
