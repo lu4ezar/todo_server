@@ -22,3 +22,13 @@ const TodoSchema: Schema = new Schema<ITodo>({
 });
 
 TodoSchema.index({ title: 1, checklist: 1 }, { unique: true });
+TodoSchema.pre('save', async function () {
+  const count = await Checklist.countDocuments({
+    _id: (this as ITodo).checklist,
+  });
+  if (!count) {
+    throw new Error('No checklist with provided id');
+  }
+});
+
+export default model('Todo', TodoSchema);
