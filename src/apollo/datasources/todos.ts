@@ -42,7 +42,7 @@ export default class TodosAPI extends DataSource {
   }
   async deleteTodo(_id: Scalars['ID']): Promise<ITodo> {
     const todo = (await Todo.findById({ _id })) as ITodo;
-    Todo.deleteOne({ _id });
+    await Todo.deleteOne({ _id });
     return todo;
   }
 }
