@@ -1,4 +1,11 @@
-const dbPath = process.env.PROD_MONGODB || 'mongodb://localhost:27017/todolist';
+import dotenv from 'dotenv';
+
+dotenv.config();
+
+const dbPath =
+  process.env.NODE_ENV === 'production'
+    ? (process.env.PROD_MONGODB as string)
+    : (process.env.DEV_MONGODB as string);
 
 import mongoose from 'mongoose';
 

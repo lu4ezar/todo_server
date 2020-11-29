@@ -1,59 +1,14 @@
-import { gql } from 'apollo-server-express';
+import { makeExecutableSchema } from 'apollo-server-express';
+import { GraphQLSchema } from 'graphql';
+import { DIRECTIVES } from '@graphql-codegen/typescript-mongodb';
+import Common from './typeDefs/shared';
+import todosTypeDef from './typeDefs/todos';
+import checklistsTypeDef from './typeDefs/checklists';
+import { Todos, Checklists } from './resolvers';
 
-const typeDefs = gql`
-  """
-  Date/Time type
-  """
-  scalar DateTime
+const schema: GraphQLSchema = makeExecutableSchema({
+  typeDefs: [DIRECTIVES, Common, todosTypeDef, checklistsTypeDef],
+  resolvers: [Todos, Checklists],
+});
 
-  """
-  Todo type
-  """
-  type Todo {
-    id: ID!
-    title: String!
-    description: String!
-    priority: TodoPriority
-    status: TodoStatus
-    created: DateTime
-  }
-
-  input CreateTodoInput {
-    title: String!
-    description: String
-    priority: TodoPriority
-    status: TodoStatus
-  }
-
-  input UpdateTodoInput {
-    title: String
-    description: String
-    priority: TodoPriority
-    status: TodoStatus
-  }
-
-  type Query {
-    todo(id: ID!): Todo
-    todos: [Todo]
-  }
-
-  type Mutation {
-    createTodo(input: CreateTodoInput!): Todo!
-    updateTodo(id: ID!, input: UpdateTodoInput!): Todo!
-    deleteTodo(id: ID!): Todo!
-  }
-
-  enum TodoPriority {
-    LOW
-    NORMAL
-    HIGH
-  }
-
-  enum TodoStatus {
-    ACTIVE
-    COMPLETED
-    EXPIRED
-  }
-`;
-
-export default typeDefs;
+export { schema };

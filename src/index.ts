@@ -1,17 +1,17 @@
 /* eslint-disable no-console */
 import express from 'express';
 import { ApolloServer } from 'apollo-server-express';
-import typeDefs from './apollo/schema';
-import resolvers from './apollo/resolvers';
 import db from './mongoose/db';
 import TodoModel from './mongoose/todo.model';
-import TodosAPI from './apollo/datasource';
+import ChecklistModel from './mongoose/checklist.model';
+import { TodosAPI, ChecklistsAPI } from './apollo/datasources';
+import { schema } from './apollo/schema';
 
 const server = new ApolloServer({
-  typeDefs,
-  resolvers,
+  schema,
   dataSources: () => ({
     todosAPI: new TodosAPI(TodoModel.collection),
+    checklistsAPI: new ChecklistsAPI(ChecklistModel.collection),
   }),
   context: async () => db,
   playground: true,
@@ -23,7 +23,5 @@ const app = express();
 server.applyMiddleware({ app });
 
 app.listen({ port: process.env.PORT || 4000 }, () =>
-  console.log(
-    `server is listening. http://localhost:4000${server.graphqlPath}`,
-  ),
+  console.log(`server is listening. http://localhost:4000${server.graphqlPath}`)
 );
