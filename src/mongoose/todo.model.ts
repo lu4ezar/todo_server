@@ -3,7 +3,7 @@ import { ITodo } from './todo.interface';
 import { Priority } from '../generated/graphql';
 import Checklist from './checklist.model';
 
-const TodoSchema: Schema = new Schema<ITodo>({
+const TodoSchema: Schema = new Schema({
   order: Number,
   title: { type: String, required: true, unique: false },
   description: String,
@@ -34,4 +34,4 @@ TodoSchema.pre('save', async function () {
   }
 });
 
-export default model('Todo', TodoSchema);
+export default model<ITodo>('Todo', TodoSchema);
