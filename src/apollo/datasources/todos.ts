@@ -40,7 +40,7 @@ export default class TodosAPI extends DataSource {
   }
 
   async updateTodo(input: UpdateTodoInput): Promise<ITodo> {
-    return (await Todo.findOneAndUpdate({ _id: input._id }, input, {
+    return (await Todo.findOneAndUpdate({ _id: input.id }, input, {
       new: true,
     })) as ITodo;
   }

@@ -37,10 +37,10 @@ export default gql`
 
   input UpdateChecklistInput {
     id: ID!
-    title: String
-    description: String
-    priority: Priority
-    completed: Boolean
-    expires: DateTime!
+    title: String!
+    description: String!
+    priority: Priority!
+    completed: Boolean!
+    expires: DateTime
   }
 `;
