@@ -23,6 +23,11 @@ export type Scalars = {
   DateTime: any;
 };
 
+export type AdditionalEntityFields = {
+  path?: Maybe<Scalars['String']>;
+  type?: Maybe<Scalars['String']>;
+};
+
 export type Query = {
   __typename?: 'Query';
   todo?: Maybe<Todo>;
@@ -340,6 +345,8 @@ export type DirectiveResolverFn<
 
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = ResolversObject<{
+  AdditionalEntityFields: AdditionalEntityFields;
+  String: ResolverTypeWrapper<Scalars['String']>;
   DateTime: ResolverTypeWrapper<Scalars['DateTime']>;
   Query: ResolverTypeWrapper<{}>;
   ID: ResolverTypeWrapper<Scalars['ID']>;
@@ -364,6 +371,8 @@ export type ResolversTypes = ResolversObject<{
 
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = ResolversObject<{
+  AdditionalEntityFields: AdditionalEntityFields;
+  String: Scalars['String'];
   DateTime: Scalars['DateTime'];
   Query: {};
   ID: Scalars['ID'];
@@ -687,3 +696,12 @@ export type IDirectiveResolvers<ContextType = any> = DirectiveResolvers<
   ContextType
 >;
 import { ObjectID } from 'mongodb';
+export type TodoDbObject = {
+  title: string;
+  description?: Maybe<string>;
+};
+
+export type ChecklistDbObject = {
+  title: string;
+  todos: Array<TodoDbObject>;
+};

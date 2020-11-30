@@ -1,6 +1,7 @@
 import { model, Schema } from 'mongoose';
-import { IChecklist } from './checklist.interface';
+import { IChecklistRefDocument } from './checklist.interface';
 import { Priority } from '../generated/graphql';
+import Todo from './todo.model';
 
 const ChecklistSchema: Schema = new Schema({
   order: Number,
@@ -16,4 +17,8 @@ const ChecklistSchema: Schema = new Schema({
   todos: [{ type: Schema.Types.ObjectId, ref: 'Todo' }],
 });
 
-export default model<IChecklist>('Checklist', ChecklistSchema);
+ChecklistSchema.post('findOneAndDelete', async function (checklist) {
+  await Todo.deleteMany({ checklist: checklist._id });
+});
+
+export default model<IChecklistRefDocument>('Checklist', ChecklistSchema);

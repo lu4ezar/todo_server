@@ -9,6 +9,47 @@
     "subscriptionType": null,
     "types": [
       {
+        "kind": "INPUT_OBJECT",
+        "name": "AdditionalEntityFields",
+        "description": null,
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "path",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "type",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null
+          }
+        ],
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "SCALAR",
+        "name": "String",
+        "description": "The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.",
+        "fields": null,
+        "inputFields": null,
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
         "kind": "SCALAR",
         "name": "DateTime",
         "description": "Date/Time type",
@@ -2377,6 +2418,178 @@
       }
     ],
     "directives": [
+      {
+        "name": "union",
+        "description": null,
+        "isRepeatable": false,
+        "locations": ["UNION"],
+        "args": [
+          {
+            "name": "discriminatorField",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "additionalFields",
+            "description": null,
+            "type": {
+              "kind": "LIST",
+              "name": null,
+              "ofType": {
+                "kind": "INPUT_OBJECT",
+                "name": "AdditionalEntityFields",
+                "ofType": null
+              }
+            },
+            "defaultValue": null
+          }
+        ]
+      },
+      {
+        "name": "abstractEntity",
+        "description": null,
+        "isRepeatable": false,
+        "locations": ["INTERFACE"],
+        "args": [
+          {
+            "name": "discriminatorField",
+            "description": null,
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "additionalFields",
+            "description": null,
+            "type": {
+              "kind": "LIST",
+              "name": null,
+              "ofType": {
+                "kind": "INPUT_OBJECT",
+                "name": "AdditionalEntityFields",
+                "ofType": null
+              }
+            },
+            "defaultValue": null
+          }
+        ]
+      },
+      {
+        "name": "entity",
+        "description": null,
+        "isRepeatable": false,
+        "locations": ["OBJECT"],
+        "args": [
+          {
+            "name": "embedded",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "Boolean",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "additionalFields",
+            "description": null,
+            "type": {
+              "kind": "LIST",
+              "name": null,
+              "ofType": {
+                "kind": "INPUT_OBJECT",
+                "name": "AdditionalEntityFields",
+                "ofType": null
+              }
+            },
+            "defaultValue": null
+          }
+        ]
+      },
+      {
+        "name": "column",
+        "description": null,
+        "isRepeatable": false,
+        "locations": ["FIELD_DEFINITION"],
+        "args": [
+          {
+            "name": "overrideType",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null
+          }
+        ]
+      },
+      {
+        "name": "id",
+        "description": null,
+        "isRepeatable": false,
+        "locations": ["FIELD_DEFINITION"],
+        "args": []
+      },
+      {
+        "name": "link",
+        "description": null,
+        "isRepeatable": false,
+        "locations": ["FIELD_DEFINITION"],
+        "args": [
+          {
+            "name": "overrideType",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null
+          }
+        ]
+      },
+      {
+        "name": "embedded",
+        "description": null,
+        "isRepeatable": false,
+        "locations": ["FIELD_DEFINITION"],
+        "args": []
+      },
+      {
+        "name": "map",
+        "description": null,
+        "isRepeatable": false,
+        "locations": ["FIELD_DEFINITION"],
+        "args": [
+          {
+            "name": "path",
+            "description": null,
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "defaultValue": null
+          }
+        ]
+      },
       {
         "name": "include",
         "description": "Directs the executor to include this field or fragment only when the `if` argument is true.",
