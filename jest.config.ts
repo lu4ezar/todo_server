@@ -93,7 +93,7 @@ export default {
   // notifyMode: "failure-change",
 
   // A preset that is used as a base for Jest's configuration
-  // preset: undefined,
+  preset: '@shelf/jest-mongodb',
 
   // Run tests from one or more projects
   // projects: undefined,
@@ -156,7 +156,7 @@ export default {
   //   "/node_modules/"
   // ],
 
-  // The regexp pattern or array of patterns that Jest uses to detect test files
+  //e The regexp pattern or array of patterns that Jest uses to detect test files
   // testRegex: [],
 
   // This option allows the use of a custom results processor
