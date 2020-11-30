@@ -1,15 +1,11 @@
 import { DataSource } from 'apollo-datasource';
-import { Collection } from 'mongoose';
+import { Collection, MongooseUpdateQuery } from 'mongoose';
 import {
   IChecklistDocument,
   IChecklistRefDocument,
 } from '../../mongoose/checklist.interface';
 import Checklist from '../../mongoose/checklist.model';
-import {
-  CreateChecklistInput,
-  Scalars,
-  UpdateChecklistInput,
-} from '../../generated/graphql';
+import { CreateChecklistInput, Scalars } from '../../generated/graphql';
 
 export default class ChecklistsAPI extends DataSource {
   collection: Collection;
@@ -32,7 +28,20 @@ export default class ChecklistsAPI extends DataSource {
     return checklist.save();
   }
   async updateChecklist(
-    input: UpdateChecklistInput
+    input: MongooseUpdateQuery<
+      Pick<
+        IChecklistRefDocument,
+        | '_id'
+        | 'todos'
+        | 'order'
+        | 'title'
+        | 'description'
+        | 'priority'
+        | 'completed'
+        | 'created'
+        | 'expires'
+      >
+    >
   ): Promise<IChecklistRefDocument> {
     return (await Checklist.findOneAndUpdate({ _id: input.id }, input, {
       new: true,

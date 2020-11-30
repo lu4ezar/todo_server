@@ -1,14 +1,10 @@
 import { DataSource } from 'apollo-datasource';
-import { Collection } from 'mongoose';
+import { Collection, MongooseUpdateQuery } from 'mongoose';
 import { ITodo } from '../../mongoose/todo.interface';
 import { IChecklistRefDocument } from '../../mongoose/checklist.interface';
 import Todo from '../../mongoose/todo.model';
 import Checklist from '../../mongoose/checklist.model';
-import {
-  CreateTodoInput,
-  UpdateTodoInput,
-  Scalars,
-} from '../../generated/graphql';
+import { CreateTodoInput, Scalars } from '../../generated/graphql';
 
 export default class TodosAPI extends DataSource {
   collection: Collection;
@@ -39,7 +35,22 @@ export default class TodosAPI extends DataSource {
     return result;
   }
 
-  async updateTodo(input: UpdateTodoInput): Promise<ITodo> {
+  async updateTodo(
+    input: MongooseUpdateQuery<
+      Pick<
+        ITodo,
+        | '_id'
+        | 'order'
+        | 'title'
+        | 'description'
+        | 'priority'
+        | 'completed'
+        | 'created'
+        | 'expires'
+        | 'checklist'
+      >
+    >
+  ): Promise<ITodo> {
     return (await Todo.findOneAndUpdate({ _id: input.id }, input, {
       new: true,
     })) as ITodo;
