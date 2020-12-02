@@ -154,10 +154,10 @@ export type CreateTodoInput = {
 
 export type UpdateTodoInput = {
   id: Scalars['ID'];
-  title?: Maybe<Scalars['String']>;
-  description?: Maybe<Scalars['String']>;
-  priority?: Maybe<Priority>;
-  completed?: Maybe<Scalars['Boolean']>;
+  title: Scalars['String'];
+  description: Scalars['String'];
+  priority: Priority;
+  completed: Scalars['Boolean'];
   expires?: Maybe<Scalars['DateTime']>;
   checklist?: Maybe<Scalars['ID']>;
 };
@@ -190,11 +190,11 @@ export type CreateChecklistInput = {
 
 export type UpdateChecklistInput = {
   id: Scalars['ID'];
-  title?: Maybe<Scalars['String']>;
-  description?: Maybe<Scalars['String']>;
-  priority?: Maybe<Priority>;
-  completed?: Maybe<Scalars['Boolean']>;
-  expires: Scalars['DateTime'];
+  title: Scalars['String'];
+  description: Scalars['String'];
+  priority: Priority;
+  completed: Scalars['Boolean'];
+  expires?: Maybe<Scalars['DateTime']>;
 };
 
 /** User Type */
