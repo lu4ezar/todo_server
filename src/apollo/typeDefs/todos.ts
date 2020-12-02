@@ -39,10 +39,10 @@ export default gql`
 
   input UpdateTodoInput {
     id: ID!
-    title: String
-    description: String
-    priority: Priority
-    completed: Boolean
+    title: String!
+    description: String!
+    priority: Priority!
+    completed: Boolean!
     expires: DateTime
     checklist: ID
   }

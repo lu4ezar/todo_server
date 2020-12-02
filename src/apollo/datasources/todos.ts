@@ -1,10 +1,14 @@
 import { DataSource } from 'apollo-datasource';
 import { Collection } from 'mongoose';
 import { ITodo } from '../../mongoose/todo.interface';
-import { IChecklist } from '../../mongoose/checklist.interface';
+import { IChecklistRefDocument } from '../../mongoose/checklist.interface';
 import Todo from '../../mongoose/todo.model';
 import Checklist from '../../mongoose/checklist.model';
-import { CreateTodoInput, Scalars } from '../../generated/graphql';
+import {
+  CreateTodoInput,
+  UpdateTodoInput,
+  Scalars,
+} from '../../generated/graphql';
 
 export default class TodosAPI extends DataSource {
   collection: Collection;
@@ -14,20 +18,11 @@ export default class TodosAPI extends DataSource {
   }
   // Queries
   async getTodos(checklist: ITodo['checklist']): Promise<Array<ITodo>> {
-    if (checklist) {
-      const parentChecklist = await Checklist.findOne({
-        _id: checklist,
-      });
-      if (parentChecklist) {
-        return parentChecklist.todos;
-      }
-    }
-    return await Todo.find();
+    return await Todo.find({ checklist });
   }
 
   async getTodo(_id: Scalars['ID']): Promise<ITodo> {
-    const todo = (await Todo.findOne({ _id })) as ITodo;
-    return todo;
+    return (await Todo.findOne({ _id })) as ITodo;
   }
 
   // Mutations
@@ -37,18 +32,23 @@ export default class TodosAPI extends DataSource {
     if (input.checklist) {
       const checklist = (await Checklist.findOne({
         _id: input.checklist,
-      })) as IChecklist;
-      checklist.todos = [...checklist.todos, result];
+      })) as IChecklistRefDocument;
+      checklist.todos = [...checklist.todos, result._id];
       await checklist.save();
     }
     return result;
   }
 
+  async updateTodo(input: UpdateTodoInput): Promise<ITodo> {
+    return (await Todo.findOneAndUpdate({ _id: input.id }, input, {
+      new: true,
+    })) as ITodo;
+  }
+
   async toggleTodo(_id: Scalars['ID']): Promise<ITodo> {
     const todo = (await Todo.findById(_id)) as ITodo;
     todo.completed = !todo.completed;
-    const result = await todo.save();
-    return result;
+    return todo.save();
   }
   async deleteTodo(_id: Scalars['ID']): Promise<ITodo> {
     const todo = (await Todo.findById({ _id })) as ITodo;

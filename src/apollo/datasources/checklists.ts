@@ -1,8 +1,15 @@
 import { DataSource } from 'apollo-datasource';
-import { Collection, MongooseUpdateQuery } from 'mongoose';
-import { IChecklist } from '../../mongoose/checklist.interface';
+import { Collection } from 'mongoose';
+import {
+  IChecklistDocument,
+  IChecklistRefDocument,
+} from '../../mongoose/checklist.interface';
 import Checklist from '../../mongoose/checklist.model';
-import { CreateChecklistInput, Scalars } from '../../generated/graphql';
+import {
+  CreateChecklistInput,
+  Scalars,
+  UpdateChecklistInput,
+} from '../../generated/graphql';
 
 export default class ChecklistsAPI extends DataSource {
   collection: Collection;
@@ -12,33 +19,28 @@ export default class ChecklistsAPI extends DataSource {
   }
 
   // Queries
-  async getChecklists(): Promise<Array<IChecklist>> {
-    return await Checklist.find();
+  async getChecklists(): Promise<Array<IChecklistDocument>> {
+    return await Checklist.find().populate('todos').exec();
   }
 
-  async getChecklist(_id: Scalars['ID']): Promise<IChecklist> {
-    return (await Checklist.findOne({ _id })) as IChecklist;
+  async getChecklist(_id: Scalars['ID']): Promise<IChecklistRefDocument> {
+    return (await Checklist.findOne({ _id })) as IChecklistRefDocument;
   }
   // Mutations
-  createChecklist(input: CreateChecklistInput): Promise<IChecklist> {
-    const checklist = new Checklist(input);
+  createChecklist(input: CreateChecklistInput): Promise<IChecklistRefDocument> {
+    const checklist = new Checklist(input) as IChecklistRefDocument;
     return checklist.save();
   }
   async updateChecklist(
-    input: MongooseUpdateQuery<
-      Pick<
-        IChecklist,
-        'title' | 'description' | 'priority' | 'completed' | 'expires'
-      >
-    >
-  ): Promise<IChecklist> {
-    return (await Checklist.findOneAndUpdate({ _id: input._id }, input, {
+    input: UpdateChecklistInput
+  ): Promise<IChecklistRefDocument> {
+    return (await Checklist.findOneAndUpdate({ _id: input.id }, input, {
       new: true,
-    })) as IChecklist;
+    })) as IChecklistRefDocument;
   }
-  async deleteChecklist(_id: Scalars['ID']): Promise<IChecklist> {
-    const checklist = (await Checklist.findById({ _id })) as IChecklist;
-    await Checklist.deleteOne({ _id });
-    return checklist;
+  async deleteChecklist(_id: Scalars['ID']): Promise<IChecklistRefDocument> {
+    return (await Checklist.findOneAndDelete({
+      _id,
+    })) as IChecklistRefDocument;
   }
 }
