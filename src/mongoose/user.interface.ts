@@ -5,6 +5,6 @@ export interface IUser extends Document {
   email: string;
   created: Date;
   checklists: IChecklist['_id'][];
-  hashedPassword: string;
+  password: string;
   validatePassword: (String) => boolean;
 }

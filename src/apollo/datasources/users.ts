@@ -7,7 +7,8 @@ import {
   CreateUserInput,
   Scalars,
   UpdateUserInput,
-  User as UserType
+  User as UserType,
+  AuthPayload,
 } from '../../generated/graphql';
 
 export default class UsersAPI extends DataSource {
@@ -22,18 +23,22 @@ export default class UsersAPI extends DataSource {
     return (await User.findOne({ email })) as IUser;
   }
   // Mutations
-  async createUser(input: CreateUserInput): Promise<IUser> {
+  async createUser(input: CreateUserInput): Promise<AuthPayload> {
     const user = new User(input);
     return await user.save();
   }
-  async authUser(input: { email: string; password: string }) {
+  async authUser(input: {
+    email: string;
+    password: string;
+  }): Promise<AuthPayload> {
     const { email, password } = input;
     const user = await User.findOne({ email });
     console.log(typeof user);
-    /* if (user?.validatePassword(password)) {
+    if (user?.validatePassword(password)) {
       const token = jwt.sign(user, 'supersecret');
       return { token };
-    }*/
+    }
+    throw new Error('User not found');
   }
   async updateUser(input: UpdateUserInput): Promise<IUser> {
     return (await User.findOneAndUpdate({ email: input.email }, input, {
