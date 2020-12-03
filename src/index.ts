@@ -24,7 +24,7 @@ const server = new ApolloServer({
     checklistsAPI: new ChecklistsAPI(ChecklistModel.collection),
     usersAPI: new UsersAPI(UserModel.collection),
   }),
-  context: async () => db,
+  context: async (req) => ({ req, db }),
   playground: true,
   introspection: true,
 });

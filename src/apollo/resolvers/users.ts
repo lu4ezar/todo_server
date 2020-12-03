@@ -8,8 +8,8 @@ import { IUser } from '../../mongoose/user.interface';
 
 const resolvers: Resolvers = {
   Query: {
-    /* me: (_, { email }, { dataSources }): Promise<IUser> =>
-      dataSources.usersAPI.getUser(email),*/
+    user: (_, { email }, { dataSources, req }): Promise<IUser> =>
+      dataSources.usersAPI.getUser(email),
   } as QueryResolvers,
   Mutation: {
     createUser: async (_, { input }, { dataSources }): Promise<AuthPayload> =>

@@ -25,7 +25,10 @@ export default class UsersAPI extends DataSource {
   // Mutations
   async createUser(input: CreateUserInput): Promise<AuthPayload> {
     const user = new User(input);
-    return await user.save();
+    await user.save();
+    return {
+      token: jwt.sign(user, 'secret'),
+    };
   }
   async authUser(input: {
     email: string;
@@ -33,9 +36,8 @@ export default class UsersAPI extends DataSource {
   }): Promise<AuthPayload> {
     const { email, password } = input;
     const user = await User.findOne({ email });
-    console.log(typeof user);
     if (user?.validatePassword(password)) {
-      const token = jwt.sign(user, 'supersecret');
+      const token = jwt.sign(user, 'secret');
       return { token };
     }
     throw new Error('User not found');
