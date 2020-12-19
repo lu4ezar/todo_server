@@ -1,20 +1,20 @@
 import {
   Resolvers,
-  QueryResolvers,
+  // QueryResolvers,
   MutationResolvers,
-  Token,
+  AuthPayload,
 } from '../../generated/graphql';
 import { IUser } from '../../mongoose/user.interface';
 
 const resolvers: Resolvers = {
-  Query: {
-    /* me: (_, { email }, { dataSources }): Promise<IUser> =>
-      dataSources.usersAPI.getUser(email),*/
-  } as QueryResolvers,
+  // Query: {
+  //   user: (_, { email }, { dataSources, req }): Promise<IUser> =>
+  //     dataSources.usersAPI.getUser(email),
+  // } as QueryResolvers,
   Mutation: {
-    createUser: async (_, { input }, { dataSources }): Promise<Token> =>
+    createUser: async (_, { input }, { dataSources }): Promise<AuthPayload> =>
       dataSources.usersAPI.createUser(input),
-    loginUser: async (_, { input }, { dataSources }): Promise<Token> =>
+    loginUser: async (_, { input }, { dataSources }): Promise<AuthPayload> =>
       dataSources.usersAPI.loginUser(input),
     updateUser: async (_, { input }, { dataSources }): Promise<IUser> =>
       dataSources.usersAPI.updateUser(input),

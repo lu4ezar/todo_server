@@ -6,13 +6,10 @@ export default gql`
   """
   type User {
     id: ID!
+    name: String
     email: String!
-    hashedPassword: String!
+    password: String!
     created: DateTime!
-  }
-
-  type Token {
-    token: String!
   }
 
   extend type Query {
@@ -20,19 +17,25 @@ export default gql`
   }
 
   extend type Mutation {
-    createUser(input: CreateUserInput!): Token!
-    loginUser(input: CreateUserInput!): Token!
+    createUser(input: CreateUserInput!): AuthPayload!
+    loginUser(input: CreateUserInput!): AuthPayload!
     updateUser(input: UpdateUserInput!): User!
     deleteUser(email: String!): User!
   }
 
+  type AuthPayload {
+    token: String!
+  }
+
   input CreateUserInput {
+    name: String
     email: String!
-    hashedPassword: String!
+    password: String!
   }
 
   input UpdateUserInput {
+    name: String
     email: String!
-    hashedPassword: String!
+    password: String!
   }
 `;

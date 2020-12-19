@@ -23,6 +23,11 @@ export type Scalars = {
   DateTime: any;
 };
 
+export type AdditionalEntityFields = {
+  path?: Maybe<Scalars['String']>;
+  type?: Maybe<Scalars['String']>;
+};
+
 export type Query = {
   __typename?: 'Query';
   todo?: Maybe<Todo>;
@@ -59,8 +64,8 @@ export type Mutation = {
   updateChecklist: Checklist;
   deleteChecklist: Checklist;
   reorderChecklists: Checklist;
-  createUser: Token;
-  loginUser: Token;
+  createUser: AuthPayload;
+  loginUser: AuthPayload;
   updateUser: User;
   deleteUser: User;
 };
@@ -149,10 +154,10 @@ export type CreateTodoInput = {
 
 export type UpdateTodoInput = {
   id: Scalars['ID'];
-  title?: Maybe<Scalars['String']>;
-  description?: Maybe<Scalars['String']>;
-  priority?: Maybe<Priority>;
-  completed?: Maybe<Scalars['Boolean']>;
+  title: Scalars['String'];
+  description: Scalars['String'];
+  priority: Priority;
+  completed: Scalars['Boolean'];
   expires?: Maybe<Scalars['DateTime']>;
   checklist?: Maybe<Scalars['ID']>;
 };
@@ -185,40 +190,38 @@ export type CreateChecklistInput = {
 
 export type UpdateChecklistInput = {
   id: Scalars['ID'];
-  title?: Maybe<Scalars['String']>;
-  description?: Maybe<Scalars['String']>;
-  priority?: Maybe<Priority>;
-  completed?: Maybe<Scalars['Boolean']>;
-  expires: Scalars['DateTime'];
+  title: Scalars['String'];
+  description: Scalars['String'];
+  priority: Priority;
+  completed: Scalars['Boolean'];
+  expires?: Maybe<Scalars['DateTime']>;
 };
 
 /** User Type */
 export type User = {
   __typename?: 'User';
   id: Scalars['ID'];
+  name?: Maybe<Scalars['String']>;
   email: Scalars['String'];
-  hashedPassword: Scalars['String'];
+  password: Scalars['String'];
   created: Scalars['DateTime'];
 };
 
-export type Token = {
-  __typename?: 'Token';
+export type AuthPayload = {
+  __typename?: 'AuthPayload';
   token: Scalars['String'];
 };
 
 export type CreateUserInput = {
+  name?: Maybe<Scalars['String']>;
   email: Scalars['String'];
-  hashedPassword: Scalars['String'];
+  password: Scalars['String'];
 };
 
 export type UpdateUserInput = {
+  name?: Maybe<Scalars['String']>;
   email: Scalars['String'];
-  hashedPassword: Scalars['String'];
-};
-
-export type AdditionalEntityFields = {
-  path?: Maybe<Scalars['String']>;
-  type?: Maybe<Scalars['String']>;
+  password: Scalars['String'];
 };
 
 export type WithIndex<TObject> = TObject & Record<string, any>;
@@ -340,10 +343,11 @@ export type DirectiveResolverFn<
 
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = ResolversObject<{
+  AdditionalEntityFields: AdditionalEntityFields;
+  String: ResolverTypeWrapper<Scalars['String']>;
   DateTime: ResolverTypeWrapper<Scalars['DateTime']>;
   Query: ResolverTypeWrapper<{}>;
   ID: ResolverTypeWrapper<Scalars['ID']>;
-  String: ResolverTypeWrapper<Scalars['String']>;
   Mutation: ResolverTypeWrapper<{}>;
   Int: ResolverTypeWrapper<Scalars['Int']>;
   Priority: Priority;
@@ -356,18 +360,18 @@ export type ResolversTypes = ResolversObject<{
   CreateChecklistInput: CreateChecklistInput;
   UpdateChecklistInput: UpdateChecklistInput;
   User: ResolverTypeWrapper<User>;
-  Token: ResolverTypeWrapper<Token>;
+  AuthPayload: ResolverTypeWrapper<AuthPayload>;
   CreateUserInput: CreateUserInput;
   UpdateUserInput: UpdateUserInput;
-  AdditionalEntityFields: AdditionalEntityFields;
 }>;
 
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = ResolversObject<{
+  AdditionalEntityFields: AdditionalEntityFields;
+  String: Scalars['String'];
   DateTime: Scalars['DateTime'];
   Query: {};
   ID: Scalars['ID'];
-  String: Scalars['String'];
   Mutation: {};
   Int: Scalars['Int'];
   Todo: Todo;
@@ -379,10 +383,9 @@ export type ResolversParentTypes = ResolversObject<{
   CreateChecklistInput: CreateChecklistInput;
   UpdateChecklistInput: UpdateChecklistInput;
   User: User;
-  Token: Token;
+  AuthPayload: AuthPayload;
   CreateUserInput: CreateUserInput;
   UpdateUserInput: UpdateUserInput;
-  AdditionalEntityFields: AdditionalEntityFields;
 }>;
 
 export type UnionDirectiveArgs = {
@@ -558,6 +561,30 @@ export type MutationResolvers<
     ContextType,
     RequireFields<MutationReorderChecklistsArgs, 'id' | 'order'>
   >;
+  createUser?: Resolver<
+    ResolversTypes['AuthPayload'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationCreateUserArgs, 'input'>
+  >;
+  loginUser?: Resolver<
+    ResolversTypes['AuthPayload'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationLoginUserArgs, 'input'>
+  >;
+  updateUser?: Resolver<
+    ResolversTypes['User'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationUpdateUserArgs, 'input'>
+  >;
+  deleteUser?: Resolver<
+    ResolversTypes['User'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationDeleteUserArgs, 'email'>
+  >;
 }>;
 
 export type TodoResolvers<
@@ -609,15 +636,16 @@ export type UserResolvers<
   ParentType extends ResolversParentTypes['User'] = ResolversParentTypes['User']
 > = ResolversObject<{
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  name?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   email?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  hashedPassword?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  password?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   created?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
-export type TokenResolvers<
+export type AuthPayloadResolvers<
   ContextType = any,
-  ParentType extends ResolversParentTypes['Token'] = ResolversParentTypes['Token']
+  ParentType extends ResolversParentTypes['AuthPayload'] = ResolversParentTypes['AuthPayload']
 > = ResolversObject<{
   token?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
@@ -630,7 +658,7 @@ export type Resolvers<ContextType = any> = ResolversObject<{
   Todo?: TodoResolvers<ContextType>;
   Checklist?: ChecklistResolvers<ContextType>;
   User?: UserResolvers<ContextType>;
-  Token?: TokenResolvers<ContextType>;
+  AuthPayload?: AuthPayloadResolvers<ContextType>;
 }>;
 
 /**
@@ -657,3 +685,12 @@ export type IDirectiveResolvers<ContextType = any> = DirectiveResolvers<
   ContextType
 >;
 import { ObjectID } from 'mongodb';
+export type TodoDbObject = {
+  title: string;
+  description?: Maybe<string>;
+};
+
+export type ChecklistDbObject = {
+  title: string;
+  todos: Array<TodoDbObject>;
+};

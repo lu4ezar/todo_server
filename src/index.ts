@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import express, { Request } from 'express';
+import express from 'express';
 import { ApolloServer } from 'apollo-server-express';
 import db from './mongoose/db';
 import TodoModel from './mongoose/todo.model';
@@ -13,7 +13,7 @@ const server = new ApolloServer({
     todosAPI: new TodosAPI(TodoModel.collection),
     checklistsAPI: new ChecklistsAPI(ChecklistModel.collection),
   }),
-  context: async () => db,
+  context: async (req) => ({ req, db }),
   playground: true,
   introspection: true,
 });

@@ -4,11 +4,11 @@ export default gql`
   """
   Todo type
   """
-  type Todo {
+  type Todo @entity(embedded: true) {
     id: ID!
     order: Int!
-    title: String!
-    description: String
+    title: String! @column
+    description: String @column
     priority: Priority!
     completed: Boolean!
     created: DateTime!
@@ -39,10 +39,10 @@ export default gql`
 
   input UpdateTodoInput {
     id: ID!
-    title: String
-    description: String
-    priority: Priority
-    completed: Boolean
+    title: String!
+    description: String!
+    priority: Priority!
+    completed: Boolean!
     expires: DateTime
     checklist: ID
   }
