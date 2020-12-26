@@ -10,6 +10,7 @@ const UserSchema = new Schema({
   email: {
     type: String,
     required: true,
+    unique: true,
     validate: [validate, 'invalid email'],
     createIndexes: { unique: true },
   },
