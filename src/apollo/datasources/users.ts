@@ -27,7 +27,7 @@ export default class UsersAPI extends DataSource {
     const user = new User(input);
     await user.save();
     return {
-      token: jwt.sign(user, 'secret'),
+      token: jwt.sign({ user }, process.env.SECRET || ''),
     };
   }
   async authUser(input: {
