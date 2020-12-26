@@ -6,8 +6,8 @@ import {
 } from '../../mongoose/checklist.interface';
 import Checklist from '../../mongoose/checklist.model';
 import {
+  Checklist as ChecklistType,
   CreateChecklistInput,
-  Scalars,
   UpdateChecklistInput,
 } from '../../generated/graphql';
 
@@ -23,7 +23,7 @@ export default class ChecklistsAPI extends DataSource {
     return await Checklist.find().populate('todos').exec();
   }
 
-  async getChecklist(_id: Scalars['ID']): Promise<IChecklistRefDocument> {
+  async getChecklist(_id: ChecklistType['id']): Promise<IChecklistRefDocument> {
     return (await Checklist.findOne({ _id })) as IChecklistRefDocument;
   }
   // Mutations
@@ -38,7 +38,9 @@ export default class ChecklistsAPI extends DataSource {
       new: true,
     })) as IChecklistRefDocument;
   }
-  async deleteChecklist(_id: Scalars['ID']): Promise<IChecklistRefDocument> {
+  async deleteChecklist(
+    _id: ChecklistType['id']
+  ): Promise<IChecklistRefDocument> {
     return (await Checklist.findOneAndDelete({
       _id,
     })) as IChecklistRefDocument;
