@@ -19,9 +19,12 @@ export default class UsersAPI extends DataSource {
   }
 
   // Queries
-  // async getUser(email: Scalars['String']): Promise<IUser> {
-  //   return (await User.findOne({ email })) as IUser;
-  // }
+  async getUser(email: Scalars['String']): Promise<IUser> {
+    return (await User.findOne({ email })) as IUser;
+  }
+  async getUsers(): Promise<Array<IUser>> {
+    return await User.find();
+  }
   // Mutations
   async createUser(input: CreateUserInput): Promise<AuthPayload> {
     const user = new User(input);
@@ -30,14 +33,14 @@ export default class UsersAPI extends DataSource {
       token: jwt.sign({ user }, process.env.SECRET || ''),
     };
   }
-  async authUser(input: {
+  async loginUser(input: {
     email: string;
     password: string;
   }): Promise<AuthPayload> {
     const { email, password } = input;
     const user = await User.findOne({ email });
-    if (user?.validatePassword(password)) {
-      const token = jwt.sign(user, 'secret');
+    if (user && user.validatePassword(password)) {
+      const token = jwt.sign({ user }, process.env.SECRET || '');
       return { token };
     }
     throw new Error('User not found');
