@@ -13,7 +13,8 @@ export default gql`
   }
 
   extend type Query {
-    me(email: String!): User!
+    user(email: String!): User!
+    users: [User!]!
   }
 
   extend type Mutation {
