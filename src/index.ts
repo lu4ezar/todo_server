@@ -6,8 +6,11 @@ import TodoModel from './mongoose/todo.model';
 import ChecklistModel from './mongoose/checklist.model';
 import { TodosAPI, ChecklistsAPI } from './apollo/datasources';
 import { schema } from './apollo/schema';
+import { applyMiddleware } from 'graphql-middleware';
+import { permissions } from './apollo/permissions';
 
 const server = new ApolloServer({
+  schema: applyMiddleware(schema, permissions),
   schema,
   dataSources: () => ({
     todosAPI: new TodosAPI(TodoModel.collection),
