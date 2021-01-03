@@ -13,6 +13,7 @@ export default gql`
   }
 
   extend type Query {
+    me: User!
     user(email: String!): User!
     users: [User!]!
   }

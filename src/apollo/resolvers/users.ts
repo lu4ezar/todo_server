@@ -8,6 +8,7 @@ import { IUser } from '../../mongoose/interfaces/user.interface';
 
 const resolvers: Resolvers = {
   Query: {
+    me: (_, __, { user }) => user,
     user: (_, { email }, { dataSources }): Promise<IUser> =>
       dataSources.usersAPI.getUser(email),
     users: (_, __, { dataSources }): Promise<IUser[]> =>
