@@ -11,12 +11,9 @@ import { permissions } from './apollo/permissions';
 
 const server = new ApolloServer({
   schema: applyMiddleware(schema, permissions),
-  schema,
-  dataSources: () => ({
-    todosAPI: new TodosAPI(TodoModel.collection),
-    checklistsAPI: new ChecklistsAPI(ChecklistModel.collection),
-  }),
-  context: async (req) => ({ req, db }),
+  context: ({ req }: { req: RequestWithUser }) => {
+    return { db, user: req.user || '' };
+  },
   playground: true,
   introspection: true,
 });
