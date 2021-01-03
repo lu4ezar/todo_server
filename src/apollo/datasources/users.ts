@@ -29,8 +29,9 @@ export default class UsersAPI extends DataSource {
   async createUser(input: CreateUserInput): Promise<AuthPayload> {
     const user = new User(input);
     await user.save();
+    const token = jwt.sign(user.toJSON(), process.env.SECRET || '');
     return {
-      token: jwt.sign({ user }, process.env.SECRET || ''),
+      token,
     };
   }
   async loginUser(input: LoginUserInput): Promise<AuthPayload> {
@@ -42,7 +43,7 @@ export default class UsersAPI extends DataSource {
     if (!user.validatePassword(password)) {
       throw new Error('Incorrect password');
     }
-    const token = jwt.sign({ user }, process.env.SECRET || '');
+    const token = jwt.sign(user.toJSON(), process.env.SECRET || '');
     return { token };
   }
   async updateUser(input: UpdateUserInput): Promise<IUser> {
