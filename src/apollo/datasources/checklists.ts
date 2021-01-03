@@ -3,8 +3,8 @@ import { Collection } from 'mongoose';
 import {
   IChecklistDocument,
   IChecklistRefDocument,
-} from '../../mongoose/checklist.interface';
-import Checklist from '../../mongoose/checklist.model';
+} from '../../mongoose/interfaces/checklist.interface';
+import Checklist from '../../mongoose/models/checklist.model';
 import {
   Checklist as ChecklistType,
   CreateChecklistInput,

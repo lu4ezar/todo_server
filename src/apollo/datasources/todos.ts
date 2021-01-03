@@ -1,9 +1,9 @@
 import { DataSource } from 'apollo-datasource';
 import { Collection } from 'mongoose';
-import { ITodo } from '../../mongoose/todo.interface';
-import { IChecklistRefDocument } from '../../mongoose/checklist.interface';
-import Todo from '../../mongoose/todo.model';
-import Checklist from '../../mongoose/checklist.model';
+import { ITodo } from '../../mongoose/interfaces/todo.interface';
+import { IChecklistRefDocument } from '../../mongoose/interfaces/checklist.interface';
+import Todo from '../../mongoose/models/todo.model';
+import Checklist from '../../mongoose/models/checklist.model';
 import {
   CreateTodoInput,
   UpdateTodoInput,

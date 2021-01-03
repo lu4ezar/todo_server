@@ -4,7 +4,7 @@ import {
   QueryResolvers,
   MutationResolvers,
 } from '../../generated/graphql';
-import { IChecklistPopulatedDocument } from '../../mongoose/checklist.interface';
+import { IChecklistPopulatedDocument } from '../../mongoose/interfaces/checklist.interface';
 
 const resolvers: Resolvers = {
   Query: {

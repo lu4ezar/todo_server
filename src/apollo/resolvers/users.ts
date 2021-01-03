@@ -4,7 +4,7 @@ import {
   MutationResolvers,
   AuthPayload,
 } from '../../generated/graphql';
-import { IUser } from '../../mongoose/user.interface';
+import { IUser } from '../../mongoose/interfaces/user.interface';
 
 const resolvers: Resolvers = {
   Query: {

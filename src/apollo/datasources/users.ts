@@ -1,8 +1,8 @@
 import { DataSource } from 'apollo-datasource';
 import { Collection } from 'mongoose';
 import jwt from 'jsonwebtoken';
-import { IUser } from '../../mongoose/user.interface';
-import User from '../../mongoose/user.model';
+import { IUser } from '../../mongoose/interfaces/user.interface';
+import User from '../../mongoose/models/user.model';
 import {
   CreateUserInput,
   UpdateUserInput,

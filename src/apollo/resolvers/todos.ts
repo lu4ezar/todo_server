@@ -4,7 +4,7 @@ import {
   QueryResolvers,
   MutationResolvers,
 } from '../../generated/graphql';
-import { ITodo } from '../../mongoose/todo.interface';
+import { ITodo } from '../../mongoose/interfaces/todo.interface';
 
 const resolvers: Resolvers = {
   Query: {
