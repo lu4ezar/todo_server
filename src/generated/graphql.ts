@@ -35,6 +35,8 @@ export type Query = {
   checklist?: Maybe<Checklist>;
   checklists: Array<Checklist>;
   me: User;
+  user: User;
+  users: Array<User>;
 };
 
 export type QueryTodoArgs = {
@@ -49,7 +51,7 @@ export type QueryChecklistArgs = {
   id: Scalars['ID'];
 };
 
-export type QueryMeArgs = {
+export type QueryUserArgs = {
   email: Scalars['String'];
 };
 
@@ -113,7 +115,7 @@ export type MutationCreateUserArgs = {
 };
 
 export type MutationLoginUserArgs = {
-  input: CreateUserInput;
+  input: LoginUserInput;
 };
 
 export type MutationUpdateUserArgs = {
@@ -171,6 +173,7 @@ export type ReorderTodoInput = {
 export type Checklist = {
   __typename?: 'Checklist';
   id: Scalars['ID'];
+  owner: Scalars['ID'];
   order: Scalars['Int'];
   title: Scalars['String'];
   description?: Maybe<Scalars['String']>;
@@ -220,6 +223,11 @@ export type CreateUserInput = {
 
 export type UpdateUserInput = {
   name?: Maybe<Scalars['String']>;
+  email: Scalars['String'];
+  password: Scalars['String'];
+};
+
+export type LoginUserInput = {
   email: Scalars['String'];
   password: Scalars['String'];
 };
@@ -363,6 +371,7 @@ export type ResolversTypes = ResolversObject<{
   AuthPayload: ResolverTypeWrapper<AuthPayload>;
   CreateUserInput: CreateUserInput;
   UpdateUserInput: UpdateUserInput;
+  LoginUserInput: LoginUserInput;
 }>;
 
 /** Mapping between all available schema types and the resolvers parents */
@@ -386,6 +395,7 @@ export type ResolversParentTypes = ResolversObject<{
   AuthPayload: AuthPayload;
   CreateUserInput: CreateUserInput;
   UpdateUserInput: UpdateUserInput;
+  LoginUserInput: LoginUserInput;
 }>;
 
 export type UnionDirectiveArgs = {
@@ -501,6 +511,14 @@ export type QueryResolvers<
     ParentType,
     ContextType
   >;
+  me?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
+  user?: Resolver<
+    ResolversTypes['User'],
+    ParentType,
+    ContextType,
+    RequireFields<QueryUserArgs, 'email'>
+  >;
+  users?: Resolver<Array<ResolversTypes['User']>, ParentType, ContextType>;
 }>;
 
 export type MutationResolvers<
@@ -616,6 +634,7 @@ export type ChecklistResolvers<
   ParentType extends ResolversParentTypes['Checklist'] = ResolversParentTypes['Checklist']
 > = ResolversObject<{
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  owner?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   order?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   title?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   description?: Resolver<
@@ -681,9 +700,9 @@ export type DirectiveResolvers<ContextType = any> = ResolversObject<{
  * @deprecated
  * Use "DirectiveResolvers" root object instead. If you wish to get "IDirectiveResolvers", add "typesPrefix: I" to your config.
  */
-export type IDirectiveResolvers<ContextType = any> = DirectiveResolvers<
-  ContextType
->;
+export type IDirectiveResolvers<
+  ContextType = any
+> = DirectiveResolvers<ContextType>;
 import { ObjectID } from 'mongodb';
 export type TodoDbObject = {
   title: string;
