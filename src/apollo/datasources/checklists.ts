@@ -9,6 +9,7 @@ import {
   Checklist as ChecklistType,
   CreateChecklistInput,
   UpdateChecklistInput,
+  User,
 } from '../../generated/graphql';
 
 export default class ChecklistsAPI extends DataSource {
@@ -19,8 +20,8 @@ export default class ChecklistsAPI extends DataSource {
   }
 
   // Queries
-  async getChecklists(): Promise<Array<IChecklistDocument>> {
-    return await Checklist.find().populate('todos').exec();
+  async getChecklists(userId: User['id']): Promise<Array<IChecklistDocument>> {
+    return await Checklist.find({ owner: userId }).populate('todos').exec();
   }
 
   async getChecklist(_id: ChecklistType['id']): Promise<IChecklistRefDocument> {

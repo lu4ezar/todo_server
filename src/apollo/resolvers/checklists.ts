@@ -10,15 +10,20 @@ const resolvers: Resolvers = {
   Query: {
     checklist: (_, { id }, { dataSources }): Checklist =>
       dataSources.checklistsAPI.getChecklist(id),
-    checklists: (_, __, { dataSources }): IChecklistPopulatedDocument[] =>
-      dataSources.checklistsAPI.getChecklists(),
+    checklists: (_, __, { dataSources, user }): IChecklistPopulatedDocument[] =>
+      dataSources.checklistsAPI.getChecklists(user._id),
   } as QueryResolvers,
   Mutation: {
     createChecklist: async (
       _,
       { input },
-      { dataSources }
-    ): Promise<Checklist> => dataSources.checklistsAPI.createChecklist(input),
+      { dataSources, user }
+    ): Promise<Checklist> => {
+      return dataSources.checklistsAPI.createChecklist({
+        ...input,
+        owner: user._id,
+      });
+    },
     updateChecklist: async (
       _,
       { input },
