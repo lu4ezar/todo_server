@@ -6,6 +6,15 @@ import dataSources from './apollo/datasources';
 import { schema } from './apollo/schema';
 import { applyMiddleware } from 'graphql-middleware';
 import { permissions } from './apollo/permissions';
+import { IUser } from './mongoose/interfaces/user.interface';
+import middleware from './middleware';
+
+interface RequestWithUser extends Request {
+  user: IUser;
+}
+
+const app = express();
+app.use(middleware);
 
 const server = new ApolloServer({
   schema: applyMiddleware(schema, permissions),
@@ -16,9 +25,6 @@ const server = new ApolloServer({
   playground: true,
   introspection: true,
 });
-
-const app = express();
-// app.use(authMiddleware);
 
 server.applyMiddleware({ app });
 
