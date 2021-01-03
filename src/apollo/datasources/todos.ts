@@ -28,7 +28,6 @@ export default class TodosAPI extends DataSource {
   // Mutations
   async createTodo(input: CreateTodoInput): Promise<ITodo> {
     const todo = new Todo(input);
-    console.log(todo);
     const result = await todo.save();
     if (input.checklist) {
       const checklist = (await Checklist.findOne({
