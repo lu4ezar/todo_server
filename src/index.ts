@@ -2,15 +2,14 @@
 import express from 'express';
 import { ApolloServer } from 'apollo-server-express';
 import db from './mongoose/db';
-import TodoModel from './mongoose/todo.model';
-import ChecklistModel from './mongoose/checklist.model';
-import { TodosAPI, ChecklistsAPI } from './apollo/datasources';
+import dataSources from './apollo/datasources';
 import { schema } from './apollo/schema';
 import { applyMiddleware } from 'graphql-middleware';
 import { permissions } from './apollo/permissions';
 
 const server = new ApolloServer({
   schema: applyMiddleware(schema, permissions),
+  dataSources,
   context: ({ req }: { req: RequestWithUser }) => {
     return { db, user: req.user || '' };
   },
