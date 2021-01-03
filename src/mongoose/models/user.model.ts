@@ -1,7 +1,7 @@
 import mongoose, { Model } from 'mongoose';
 import bcrypt from 'bcryptjs';
 import { validate } from 'isemail';
-import { IUser } from './user.interface';
+import { IUser } from '../interfaces/user.interface';
 
 const { model, Schema } = mongoose;
 

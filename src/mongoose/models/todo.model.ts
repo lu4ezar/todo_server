@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
-import { ITodo } from './todo.interface';
-import { Priority } from '../generated/graphql';
+import { ITodo } from '../interfaces/todo.interface';
+import { Priority } from '../../generated/graphql';
 import Checklist from './checklist.model';
 
 const { model, Schema } = mongoose;
