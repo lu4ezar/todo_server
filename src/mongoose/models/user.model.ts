@@ -39,9 +39,9 @@ UserSchema.pre<IUser>('save', async function save(next) {
 });
 
 UserSchema.methods.validatePassword = async function validatePassword(
-  data: string
+  candidate: string
 ) {
-  return bcrypt.compare(data, this.password);
+  return bcrypt.compare(candidate, this.password);
 };
 
 export interface IUserModel extends Model<IUser> {
