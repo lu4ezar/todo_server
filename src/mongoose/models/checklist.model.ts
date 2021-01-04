@@ -1,10 +1,14 @@
 import { model, Schema } from 'mongoose';
-import { IChecklistRefDocument } from './checklist.interface';
-import { Priority } from '../generated/graphql';
+import { IChecklistRefDocument } from '../interfaces/checklist.interface';
+import { Priority } from '../../generated/graphql';
 import Todo from './todo.model';
 
 const ChecklistSchema: Schema = new Schema({
   order: Number,
+  owner: {
+    type: Schema.Types.ObjectId,
+    ref: 'User',
+  },
   title: { type: String, required: true, unique: true },
   description: String,
   priority: { type: Priority, default: Priority.Normal },

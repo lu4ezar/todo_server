@@ -1,13 +1,13 @@
 import { DataSource } from 'apollo-datasource';
 import { Collection } from 'mongoose';
-import { ITodo } from '../../mongoose/todo.interface';
-import { IChecklistRefDocument } from '../../mongoose/checklist.interface';
-import Todo from '../../mongoose/todo.model';
-import Checklist from '../../mongoose/checklist.model';
+import { ITodo } from '../../mongoose/interfaces/todo.interface';
+import { IChecklistRefDocument } from '../../mongoose/interfaces/checklist.interface';
+import Todo from '../../mongoose/models/todo.model';
+import Checklist from '../../mongoose/models/checklist.model';
 import {
   CreateTodoInput,
   UpdateTodoInput,
-  Scalars,
+  Todo as TodoType,
 } from '../../generated/graphql';
 
 export default class TodosAPI extends DataSource {
@@ -21,7 +21,7 @@ export default class TodosAPI extends DataSource {
     return await Todo.find({ checklist });
   }
 
-  async getTodo(_id: Scalars['ID']): Promise<ITodo> {
+  async getTodo(_id: TodoType['id']): Promise<ITodo> {
     return (await Todo.findOne({ _id })) as ITodo;
   }
 
@@ -45,12 +45,14 @@ export default class TodosAPI extends DataSource {
     })) as ITodo;
   }
 
-  async toggleTodo(_id: Scalars['ID']): Promise<ITodo> {
+  async toggleTodo(_id: TodoType['id']): Promise<ITodo> {
     const todo = (await Todo.findById(_id)) as ITodo;
     todo.completed = !todo.completed;
-    return todo.save();
+    const result = await todo.save();
+    return result;
+    // return todo.save();
   }
-  async deleteTodo(_id: Scalars['ID']): Promise<ITodo> {
+  async deleteTodo(_id: TodoType['id']): Promise<ITodo> {
     const todo = (await Todo.findById({ _id })) as ITodo;
     await Todo.deleteOne({ _id });
     return todo;

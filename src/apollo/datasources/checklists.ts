@@ -3,12 +3,13 @@ import { Collection } from 'mongoose';
 import {
   IChecklistDocument,
   IChecklistRefDocument,
-} from '../../mongoose/checklist.interface';
-import Checklist from '../../mongoose/checklist.model';
+} from '../../mongoose/interfaces/checklist.interface';
+import Checklist from '../../mongoose/models/checklist.model';
 import {
+  Checklist as ChecklistType,
   CreateChecklistInput,
-  Scalars,
   UpdateChecklistInput,
+  User,
 } from '../../generated/graphql';
 
 export default class ChecklistsAPI extends DataSource {
@@ -19,11 +20,11 @@ export default class ChecklistsAPI extends DataSource {
   }
 
   // Queries
-  async getChecklists(): Promise<Array<IChecklistDocument>> {
-    return await Checklist.find().populate('todos').exec();
+  async getChecklists(userId: User['id']): Promise<Array<IChecklistDocument>> {
+    return await Checklist.find({ owner: userId }).populate('todos').exec();
   }
 
-  async getChecklist(_id: Scalars['ID']): Promise<IChecklistRefDocument> {
+  async getChecklist(_id: ChecklistType['id']): Promise<IChecklistRefDocument> {
     return (await Checklist.findOne({ _id })) as IChecklistRefDocument;
   }
   // Mutations
@@ -38,7 +39,9 @@ export default class ChecklistsAPI extends DataSource {
       new: true,
     })) as IChecklistRefDocument;
   }
-  async deleteChecklist(_id: Scalars['ID']): Promise<IChecklistRefDocument> {
+  async deleteChecklist(
+    _id: ChecklistType['id']
+  ): Promise<IChecklistRefDocument> {
     return (await Checklist.findOneAndDelete({
       _id,
     })) as IChecklistRefDocument;
