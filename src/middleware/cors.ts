@@ -1,3 +1,3 @@
 import cors from 'cors';
 
-export default cors({ credentials: true });
+export default cors({ origin: '*', credentials: true });
