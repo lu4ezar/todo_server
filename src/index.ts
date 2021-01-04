@@ -2,23 +2,29 @@
 import express from 'express';
 import { ApolloServer } from 'apollo-server-express';
 import db from './mongoose/db';
-import TodoModel from './mongoose/todo.model';
-import ChecklistModel from './mongoose/checklist.model';
-import { TodosAPI, ChecklistsAPI } from './apollo/datasources';
+import dataSources from './apollo/datasources';
 import { schema } from './apollo/schema';
+import { applyMiddleware } from 'graphql-middleware';
+import { permissions } from './apollo/permissions';
+import { IUser } from './mongoose/interfaces/user.interface';
+import middleware from './middleware';
+
+interface RequestWithUser extends Request {
+  user: IUser;
+}
+
+const app = express();
+app.use(middleware);
 
 const server = new ApolloServer({
-  schema,
-  dataSources: () => ({
-    todosAPI: new TodosAPI(TodoModel.collection),
-    checklistsAPI: new ChecklistsAPI(ChecklistModel.collection),
-  }),
-  context: async () => db,
+  schema: applyMiddleware(schema, permissions),
+  dataSources,
+  context: ({ req }: { req: RequestWithUser }) => {
+    return { db, user: req.user || '' };
+  },
   playground: true,
   introspection: true,
 });
-
-const app = express();
 
 server.applyMiddleware({ app });
 
