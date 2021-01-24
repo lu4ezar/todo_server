@@ -32,7 +32,13 @@ const server = new ApolloServer({
   introspection: true,
 });
 
-server.applyMiddleware({ app });
+server.applyMiddleware({
+  app,
+  cors: {
+    origin: process.env.ORIGIN || '',
+    credentials: true,
+  },
+});
 
 app.listen({ port: process.env.PORT || 4000 }, () =>
   console.log(`server is listening. http://localhost:4000${server.graphqlPath}`)
