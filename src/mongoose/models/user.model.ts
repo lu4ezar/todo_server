@@ -1,4 +1,4 @@
-import mongoose, { Model } from 'mongoose';
+import mongoose from 'mongoose';
 import bcrypt from 'bcryptjs';
 import { validate } from 'isemail';
 import { IUser } from '../interfaces/user.interface';
@@ -45,8 +45,4 @@ UserSchema.methods.validatePassword = async function (
   return bcrypt.compare(candidate, this.password);
 };
 
-export interface IUserModel extends Model<IUser> {
-  validatePassword(data: string): Promise<boolean>;
-}
-
-export default model<IUser, IUserModel>('User', UserSchema);
+export default model<IUser>('User', UserSchema);
