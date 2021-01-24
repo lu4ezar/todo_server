@@ -30,9 +30,7 @@ export default class UsersAPI extends DataSource {
     const user = new User(input);
     await user.save();
     const token = jwt.sign(user.toJSON(), process.env.SECRET || '');
-    return {
-      token,
-    };
+    return { token };
   }
   async loginUser(input: LoginUserInput): Promise<AuthPayload> {
     const { email, password } = input;
