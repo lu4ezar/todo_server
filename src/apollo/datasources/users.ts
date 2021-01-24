@@ -40,7 +40,8 @@ export default class UsersAPI extends DataSource {
     if (!user) {
       throw new Error('User not found');
     }
-    if (!user.validatePassword(password)) {
+    const passMatch = await user.validatePassword(password);
+    if (!passMatch) {
       throw new Error('Incorrect password');
     }
     const token = jwt.sign(user.toJSON(), process.env.SECRET || '');
