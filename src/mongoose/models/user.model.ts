@@ -38,7 +38,8 @@ UserSchema.pre<IUser>('save', async function save(next) {
   }
 });
 
-UserSchema.methods.validatePassword = async function validatePassword(
+UserSchema.methods.validatePassword = async function (
+  this: IUser,
   candidate: string
 ) {
   return bcrypt.compare(candidate, this.password);
