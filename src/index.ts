@@ -1,26 +1,32 @@
 /* eslint-disable no-console */
-import express from 'express';
+import express, { Request, Response } from 'express';
 import { ApolloServer } from 'apollo-server-express';
+import jwt from 'jsonwebtoken';
 import db from './mongoose/db';
 import dataSources from './apollo/datasources';
 import { schema } from './apollo/schema';
 import { applyMiddleware } from 'graphql-middleware';
 import { permissions } from './apollo/permissions';
-import { IUser } from './mongoose/interfaces/user.interface';
-import middleware from './middleware';
-
-interface RequestWithUser extends Request {
-  user: IUser;
-}
+import cookieParser from 'cookie-parser';
 
 const app = express();
-app.use(middleware);
+app.use(cookieParser());
 
 const server = new ApolloServer({
   schema: applyMiddleware(schema, permissions),
   dataSources,
-  context: ({ req }: { req: RequestWithUser }) => {
-    return { db, user: req.user || '' };
+  context: async ({ req, res }: { req: Request; res: Response }) => {
+    try {
+      let user;
+      if (req.cookies.token) {
+        const token = req.cookies.token || '';
+        user = jwt.verify(token, process.env.SECRET as string);
+        return { db, res, user };
+      }
+      return { db, res, user: null };
+    } catch (err) {
+      console.error(err.message);
+    }
   },
   playground: true,
   introspection: true,
