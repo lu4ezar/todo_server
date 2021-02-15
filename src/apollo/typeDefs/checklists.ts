@@ -6,6 +6,7 @@ export default gql`
   """
   type Checklist @entity {
     id: ID!
+    owner: ID!
     order: Int!
     title: String! @column
     description: String

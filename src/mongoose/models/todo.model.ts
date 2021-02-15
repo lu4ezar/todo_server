@@ -1,9 +1,11 @@
-import { model, Schema } from 'mongoose';
-import { ITodo } from './todo.interface';
-import { Priority } from '../generated/graphql';
+import mongoose from 'mongoose';
+import { ITodo } from '../interfaces/todo.interface';
+import { Priority } from '../../generated/graphql';
 import Checklist from './checklist.model';
 
-const TodoSchema: Schema = new Schema({
+const { model, Schema } = mongoose;
+
+const TodoSchema = new Schema({
   order: Number,
   title: { type: String, required: true, unique: false },
   description: String,
