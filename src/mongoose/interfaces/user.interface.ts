@@ -4,6 +4,7 @@ import { IChecklistRefDocument } from './checklist.interface';
 
 export interface IUser extends Document {
   id: Scalars['ID'];
+  isAdmin: boolean;
   email: string;
   created: Date;
   checklists: IChecklistRefDocument['_id'][];

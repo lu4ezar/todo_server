@@ -1,6 +1,6 @@
 import { allow, rule, shield } from 'graphql-shield';
 
-const isAuthorized = rule()((_, __, { user }) => user && true);
+const isAdmin = rule()((_, __, ctx) => ctx.user.isAdmin);
 
 export const permissions = shield(
   {
@@ -13,6 +13,7 @@ export const permissions = shield(
       createUser: allow,
       loginUser: allow,
     },
+    User: isAdmin,
   },
   { allowExternalErrors: true }
 );

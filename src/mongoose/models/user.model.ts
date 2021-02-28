@@ -14,6 +14,11 @@ const UserSchema = new Schema({
     validate: [validate, 'invalid email'],
     createIndexes: { unique: true },
   },
+  isAdmin: {
+    type: Boolean,
+    required: true,
+    default: true,
+  },
   created: {
     type: Date,
     default: Date.now(),
