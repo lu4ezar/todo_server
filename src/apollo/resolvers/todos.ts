@@ -13,17 +13,17 @@ const resolvers: Resolvers = {
     todos: async (
       _,
       { checklist }: { checklist: Todo['checklist'] },
-      { dataSources }
+      { dataSources, user }
     ): Promise<ITodo[]> => {
       if (!checklist) {
-        return await dataSources.todosAPI.getTodos();
+        return await dataSources.todosAPI.getTodos(user._id);
       }
       return await dataSources.checklistsAPI.getChecklist(checklist).todos;
     },
   } as QueryResolvers,
   Mutation: {
-    createTodo: async (_, { input }, { dataSources }): Promise<Todo> =>
-      dataSources.todosAPI.createTodo(input),
+    createTodo: async (_, { input }, { dataSources, user }): Promise<Todo> =>
+      dataSources.todosAPI.createTodo({ ...input, owner: user._id }),
     updateTodo: async (_, { input }, { dataSources }): Promise<Todo> =>
       dataSources.todosAPI.updateTodo(input),
     deleteTodo: async (_, { id }, { dataSources }): Promise<Todo> =>

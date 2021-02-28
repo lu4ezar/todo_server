@@ -143,6 +143,7 @@ export type Todo = {
   completed: Scalars['Boolean'];
   created: Scalars['DateTime'];
   expires?: Maybe<Scalars['DateTime']>;
+  owner: Scalars['ID'];
   checklist?: Maybe<Scalars['ID']>;
 };
 
@@ -204,6 +205,7 @@ export type UpdateChecklistInput = {
 export type User = {
   __typename?: 'User';
   id: Scalars['ID'];
+  isAdmin: Scalars['Boolean'];
   name?: Maybe<Scalars['String']>;
   email: Scalars['String'];
   password: Scalars['String'];
@@ -625,6 +627,7 @@ export type TodoResolvers<
     ParentType,
     ContextType
   >;
+  owner?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   checklist?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
@@ -655,6 +658,7 @@ export type UserResolvers<
   ParentType extends ResolversParentTypes['User'] = ResolversParentTypes['User']
 > = ResolversObject<{
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  isAdmin?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   name?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   email?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   password?: Resolver<ResolversTypes['String'], ParentType, ContextType>;

@@ -6,6 +6,7 @@ export default gql`
   """
   type User {
     id: ID!
+    isAdmin: Boolean!
     name: String
     email: String!
     password: String!

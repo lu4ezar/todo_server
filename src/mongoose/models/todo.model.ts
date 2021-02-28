@@ -7,6 +7,10 @@ const { model, Schema } = mongoose;
 
 const TodoSchema = new Schema({
   order: Number,
+  owner: {
+    type: Schema.Types.ObjectId,
+    ref: 'User',
+  },
   title: { type: String, required: true, unique: false },
   description: String,
   priority: { type: Priority, default: Priority.Normal },
@@ -23,7 +27,9 @@ const TodoSchema = new Schema({
   },
 });
 
+// make it unique for checklist
 TodoSchema.index({ title: 1, checklist: 1 }, { unique: true });
+
 TodoSchema.pre('save', async function () {
   const todo = this as ITodo;
   if (todo.checklist) {

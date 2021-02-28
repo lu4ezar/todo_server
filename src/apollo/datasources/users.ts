@@ -51,8 +51,8 @@ export default class UsersAPI extends DataSource {
     })) as IUser;
   }
   async deleteUser(email: UserType['email']): Promise<IUser> {
-    const user = (await User.findOne({ email })) as IUser;
-    User.deleteOne({ email });
+    const user: IUser = await User.findOne({ email });
+    await User.deleteOne({ email });
     return user;
   }
 }

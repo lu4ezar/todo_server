@@ -18,7 +18,7 @@ const server = new ApolloServer({
   context: async ({ req, res }: { req: Request; res: Response }) => {
     try {
       let user;
-      if (req.cookies.token) {
+      if (req && req.cookies.token) {
         const token = req.cookies.token || '';
         user = jwt.verify(token, process.env.SECRET as string);
         return { db, res, user };

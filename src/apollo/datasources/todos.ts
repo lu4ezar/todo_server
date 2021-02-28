@@ -17,8 +17,11 @@ export default class TodosAPI extends DataSource {
     this.collection = collection;
   }
   // Queries
-  async getTodos(checklist: ITodo['checklist']): Promise<Array<ITodo>> {
-    return await Todo.find({ checklist });
+  async getTodos(
+    owner: ITodo['owner'],
+    checklist: ITodo['checklist']
+  ): Promise<Array<ITodo>> {
+    return await Todo.find({ owner, checklist });
   }
 
   async getTodo(_id: TodoType['id']): Promise<ITodo> {

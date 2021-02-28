@@ -7,7 +7,8 @@ import {
 import { IUser } from '../../mongoose/interfaces/user.interface';
 
 const cookieOptions = {
-  maxAge: 900000,
+  // 1 week
+  maxAge: 60 * 60 * 24 * 7,
   httpOnly: true,
   secure: true,
 };
@@ -26,7 +27,7 @@ const resolvers: Resolvers = {
       { input },
       { dataSources, res }
     ): Promise<AuthPayload> => {
-      const token = await dataSources.usersAPI.createUser(input);
+      const { token } = await dataSources.usersAPI.createUser(input);
       res.cookie('token', token, cookieOptions);
       return { token };
     },
