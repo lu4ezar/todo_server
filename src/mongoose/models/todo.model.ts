@@ -27,7 +27,9 @@ const TodoSchema = new Schema({
   },
 });
 
+// make it unique for checklist
 TodoSchema.index({ title: 1, checklist: 1 }, { unique: true });
+
 TodoSchema.pre('save', async function () {
   const todo = this as ITodo;
   if (todo.checklist) {
