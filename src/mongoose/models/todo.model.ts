@@ -7,6 +7,10 @@ const { model, Schema } = mongoose;
 
 const TodoSchema = new Schema({
   order: Number,
+  owner: {
+    type: Schema.Types.ObjectId,
+    ref: 'User',
+  },
   title: { type: String, required: true, unique: false },
   description: String,
   priority: { type: Priority, default: Priority.Normal },

@@ -13,6 +13,7 @@ export default gql`
     completed: Boolean!
     created: DateTime!
     expires: DateTime
+    owner: ID!
     checklist: ID
   }
 

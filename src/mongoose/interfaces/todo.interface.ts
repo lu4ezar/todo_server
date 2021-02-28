@@ -4,6 +4,7 @@ import { IChecklistRefDocument } from './checklist.interface';
 
 export interface ITodo extends Document {
   id: Scalars['ID'];
+  owner: Scalars['ID'];
   order: number;
   title: string;
   description: string;
