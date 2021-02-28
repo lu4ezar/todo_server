@@ -27,7 +27,7 @@ const resolvers: Resolvers = {
       { input },
       { dataSources, res }
     ): Promise<AuthPayload> => {
-      const token = await dataSources.usersAPI.createUser(input);
+      const { token } = await dataSources.usersAPI.createUser(input);
       res.cookie('token', token, cookieOptions);
       return { token };
     },
