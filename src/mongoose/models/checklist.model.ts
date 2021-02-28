@@ -21,6 +21,9 @@ const ChecklistSchema: Schema = new Schema({
   todos: [{ type: Schema.Types.ObjectId, ref: 'Todo' }],
 });
 
+// make it unique for user
+ChecklistSchema.index({ title: 1, owner: 1 }, { unique: true });
+
 ChecklistSchema.post('findOneAndDelete', async function (checklist) {
   await Todo.deleteMany({ checklist: checklist._id });
 });
