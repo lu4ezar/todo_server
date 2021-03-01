@@ -14,7 +14,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@graphql-codegen/typescript-mongodb": "^1.17.8",
+    "@graphql-codegen/typescript-mongodb": "^1.18.0",
     "apollo-datasource": "^0.7.2",
     "apollo-server-express": "^2.19.0",
     "bcryptjs": "^2.4.3",
@@ -32,12 +32,12 @@
     "mongoose": "^5.11.9"
   },
   "devDependencies": {
-    "@graphql-codegen/add": "^2.0.1",
-    "@graphql-codegen/cli": "1.19.0",
-    "@graphql-codegen/introspection": "1.18.0",
-    "@graphql-codegen/typescript": "1.17.11",
-    "@graphql-codegen/typescript-document-nodes": "1.17.8",
-    "@graphql-codegen/typescript-resolvers": "1.17.10",
+    "@graphql-codegen/add": "^2.0.2",
+    "@graphql-codegen/cli": "1.21.1",
+    "@graphql-codegen/introspection": "1.18.1",
+    "@graphql-codegen/typescript": "1.21.0",
+    "@graphql-codegen/typescript-document-nodes": "1.17.9",
+    "@graphql-codegen/typescript-resolvers": "1.18.2",
     "@types/bcryptjs": "^2.4.2",
     "@types/cookie-parser": "^1.4.2",
     "@types/cors": "^2.8.9",
