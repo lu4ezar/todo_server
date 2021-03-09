@@ -1,7 +1,7 @@
 import { rule, shield, allow, not } from 'graphql-shield';
 
 const isAuthenticated = rule({ cache: 'contextual' })(
-  (_, __, ctx) => ctx.user !== null
+  (_, __, ctx) => ctx.user != null
 );
 
 const isAuthorized = rule({ cache: 'strict' })((_, __, ctx) => {
