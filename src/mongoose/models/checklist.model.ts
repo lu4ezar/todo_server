@@ -28,4 +28,4 @@ ChecklistSchema.post('findOneAndDelete', async function (checklist) {
   await Todo.deleteMany({ checklist: checklist._id });
 });
 
-export default model<IChecklistRefDocument>('Checklist', ChecklistSchema);
+export default model<IChecklistDocument>('Checklist', ChecklistSchema);
