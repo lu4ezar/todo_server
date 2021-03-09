@@ -1,13 +1,13 @@
 import { Document } from 'mongoose';
 import { Scalars } from '../../generated/graphql';
-import { IChecklistRefDocument } from './checklist.interface';
+import { IChecklistDocument } from './checklist.interface';
 
 export interface IUser extends Document {
   id: Scalars['ID'];
   isAdmin: boolean;
   email: string;
   created: Date;
-  checklists: IChecklistRefDocument['_id'][];
+  checklists: IChecklistDocument['_id'][];
   password: string;
   validatePassword: (password: string) => boolean;
 }
