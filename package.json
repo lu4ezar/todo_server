@@ -28,8 +28,8 @@
     "graphql-tag": "^2.11.0",
     "isemail": "^3.2.0",
     "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.11.18"
     "mongodb": "^3.6.4",
-    "mongoose": "^5.11.9"
   },
   "devDependencies": {
     "@graphql-codegen/add": "^2.0.2",
@@ -42,7 +42,7 @@
     "@types/cookie-parser": "^1.4.2",
     "@types/cors": "^2.8.10",
     "@types/jsonwebtoken": "^8.5.0",
-    "@types/mongoose": "5.7.37",
+    "@types/mongoose": "5.10.3",
     "@types/node": "^14.14.25",
     "@types/webpack-env": "1.16.0",
     "@types/webpack-node-externals": "^2.5.0",
