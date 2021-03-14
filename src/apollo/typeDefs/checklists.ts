@@ -26,7 +26,7 @@ export default gql`
     createChecklist(input: CreateChecklistInput!): Checklist!
     updateChecklist(input: UpdateChecklistInput!): Checklist!
     deleteChecklist(id: ID!): Checklist!
-    reorderChecklists(id: ID!, order: Int!): Checklist!
+    reorderChecklists(input: ReorderChecklistsInput!): Checklist!
   }
 
   input CreateChecklistInput {
@@ -34,6 +34,7 @@ export default gql`
     description: String
     priority: Priority
     completed: Boolean
+    todos: [CreateTodoInput!]
   }
 
   input UpdateChecklistInput {
@@ -43,5 +44,10 @@ export default gql`
     priority: Priority!
     completed: Boolean!
     expires: DateTime
+  }
+
+  input ReorderChecklistsInput {
+    id: ID!
+    order: Int!
   }
 `;

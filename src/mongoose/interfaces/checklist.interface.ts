@@ -1,5 +1,6 @@
-import { Document } from 'mongoose';
-import { Priority, Scalars, Todo } from '../../generated/graphql';
+import { Document, Types } from 'mongoose';
+import { Priority, Scalars } from '../../generated/graphql';
+import { ITodo } from './todo.interface';
 
 export interface IChecklistDocument extends Document {
   id: Scalars['ID'];
@@ -11,5 +12,5 @@ export interface IChecklistDocument extends Document {
   completed: boolean;
   created: Date;
   expires: Date;
-  todos: Array<Todo>;
+  todos: Types.DocumentArray<ITodo>;
 }

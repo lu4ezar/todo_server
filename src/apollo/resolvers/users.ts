@@ -11,6 +11,7 @@ const cookieOptions = {
   maxAge: 60 * 60 * 24 * 7,
   httpOnly: true,
   secure: true,
+  sameSite: 'None',
 };
 
 const resolvers: Resolvers = {
@@ -42,8 +43,11 @@ const resolvers: Resolvers = {
     },
     updateUser: async (_, { input }, { dataSources }): Promise<IUser> =>
       dataSources.usersAPI.updateUser(input),
-    deleteUser: async (_, { email }, { dataSources }): Promise<IUser> =>
-      dataSources.usersAPI.deleteUser(email),
+    deleteUser: async (_, { email }, { dataSources, res }): Promise<IUser> => {
+      // not really needed //
+      res.clearCookie('token');
+      return await dataSources.usersAPI.deleteUser(email);
+    },
   } as MutationResolvers,
 };
 
