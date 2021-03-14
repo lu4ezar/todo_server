@@ -25,9 +25,11 @@ export default class ChecklistsAPI extends DataSource {
     return (await Checklist.findOne({ _id })) as IChecklistDocument;
   }
   // Mutations
-  createChecklist(input: CreateChecklistInput): Promise<IChecklistDocument> {
+  async createChecklist(
+    input: CreateChecklistInput
+  ): Promise<IChecklistDocument> {
     const checklist = new Checklist(input) as IChecklistDocument;
-    return checklist.save();
+    return await checklist.save();
   }
   async updateChecklist(
     input: UpdateChecklistInput

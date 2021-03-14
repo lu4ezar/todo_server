@@ -17,47 +17,44 @@ export default class TodosAPI extends DataSource {
     this.collection = collection;
   }
   // Queries
-  async getTodos(
-    owner: ITodo['owner'],
-    checklist: ITodo['checklist']
-  ): Promise<Array<ITodo>> {
-    return await Todo.find({ owner, checklist });
-  }
+  // async getTodos(checklist: ITodo['checklist']): Promise<Array<ITodo>> {
+  //   return await Todo.find({ checklist });
+  // }
 
-  async getTodo(_id: TodoType['id']): Promise<ITodo> {
-    return (await Todo.findOne({ _id })) as ITodo;
-  }
+  // async getTodo(_id: TodoType['id']): Promise<ITodo> {
+  //   return (await Todo.findOne({ _id })) as ITodo;
+  // }
 
   // Mutations
-  async createTodo(input: CreateTodoInput): Promise<ITodo> {
-    const todo = new Todo(input);
-    const result = await todo.save();
-    if (input.checklist) {
-      const checklist = (await Checklist.findOne({
-        _id: input.checklist,
-      })) as IChecklistRefDocument;
-      checklist.todos = [...checklist.todos, result._id];
-      await checklist.save();
+  async createTodo(input: CreateTodoInput): Promise<IChecklistDocument> {
+    const { checklist: id, ...todoInput } = input;
+    const newTodo = new Todo(todoInput);
+    const checklist = await Checklist.findOne({ _id: id });
+    if (!checklist) {
+      throw new Error('No checklist with provided id');
     }
-    return result;
+    checklist.todos.splice(newTodo.order, 0, newTodo);
+    return await checklist.save();
   }
 
-  async updateTodo(input: UpdateTodoInput): Promise<ITodo> {
-    return (await Todo.findOneAndUpdate({ _id: input.id }, input, {
-      new: true,
-    })) as ITodo;
+  async updateTodo(input: UpdateTodoInput): Promise<IChecklistDocument> {
+    const { id, ...todoInput } = input;
+    const checklist = await Checklist.findOne({ 'todos._id': id });
+    const todo = checklist.todos.id(id);
+    todo.set(todoInput);
+    return await checklist.save();
   }
 
-  async toggleTodo(_id: TodoType['id']): Promise<ITodo> {
-    const todo = (await Todo.findById(_id)) as ITodo;
-    todo.completed = !todo.completed;
-    const result = await todo.save();
-    return result;
-    // return todo.save();
+  async toggleTodo(id: TodoType['id']): Promise<IChecklistDocument> {
+    const checklist = await Checklist.findOne({ 'todos._id': id });
+    const todo = checklist.todos.id(id);
+    todo.set({ completed: !todo.completed });
+    return checklist.save();
   }
-  async deleteTodo(_id: TodoType['id']): Promise<ITodo> {
-    const todo = (await Todo.findById({ _id })) as ITodo;
-    await Todo.deleteOne({ _id });
-    return todo;
+
+  async deleteTodo(id: ITodo['id']): Promise<IChecklistDocument> {
+    const checklist = await Checklist.findOne({ 'todos._id': id });
+    checklist.todos.pull({ _id: id });
+    return await checklist.save();
   }
 }

@@ -30,21 +30,11 @@ export type AdditionalEntityFields = {
 
 export type Query = {
   __typename?: 'Query';
-  todo?: Maybe<Todo>;
-  todos: Array<Todo>;
   checklist?: Maybe<Checklist>;
   checklists: Array<Checklist>;
   me: User;
   user: User;
   users: Array<User>;
-};
-
-export type QueryTodoArgs = {
-  id: Scalars['ID'];
-};
-
-export type QueryTodosArgs = {
-  checklist?: Maybe<Scalars['ID']>;
 };
 
 export type QueryChecklistArgs = {
@@ -57,11 +47,11 @@ export type QueryUserArgs = {
 
 export type Mutation = {
   __typename?: 'Mutation';
-  createTodo: Todo;
-  updateTodo: Todo;
-  toggleTodo: Todo;
-  deleteTodo: Todo;
-  reorderTodos: Todo;
+  createTodo: Checklist;
+  updateTodo: Checklist;
+  toggleTodo: Checklist;
+  deleteTodo: Checklist;
+  reorderTodos: Checklist;
   createChecklist: Checklist;
   updateChecklist: Checklist;
   deleteChecklist: Checklist;
@@ -89,8 +79,7 @@ export type MutationDeleteTodoArgs = {
 };
 
 export type MutationReorderTodosArgs = {
-  id: Scalars['ID'];
-  order: Scalars['Int'];
+  input: ReorderTodoInput;
 };
 
 export type MutationCreateChecklistArgs = {
@@ -106,8 +95,7 @@ export type MutationDeleteChecklistArgs = {
 };
 
 export type MutationReorderChecklistsArgs = {
-  id: Scalars['ID'];
-  order: Scalars['Int'];
+  input: ReorderChecklistsInput;
 };
 
 export type MutationCreateUserArgs = {
@@ -143,29 +131,27 @@ export type Todo = {
   completed: Scalars['Boolean'];
   created: Scalars['DateTime'];
   expires?: Maybe<Scalars['DateTime']>;
-  owner: Scalars['ID'];
-  checklist?: Maybe<Scalars['ID']>;
 };
 
 export type CreateTodoInput = {
+  checklist?: Maybe<Scalars['ID']>;
   title: Scalars['String'];
   description?: Maybe<Scalars['String']>;
   priority?: Maybe<Priority>;
   completed?: Maybe<Scalars['Boolean']>;
-  checklist?: Maybe<Scalars['ID']>;
 };
 
 export type UpdateTodoInput = {
   id: Scalars['ID'];
-  title: Scalars['String'];
-  description: Scalars['String'];
-  priority: Priority;
-  completed: Scalars['Boolean'];
+  title?: Maybe<Scalars['String']>;
+  description?: Maybe<Scalars['String']>;
+  priority?: Maybe<Priority>;
+  completed?: Maybe<Scalars['Boolean']>;
   expires?: Maybe<Scalars['DateTime']>;
-  checklist?: Maybe<Scalars['ID']>;
 };
 
 export type ReorderTodoInput = {
+  checklist: Scalars['ID'];
   id: Scalars['ID'];
   order: Scalars['Int'];
 };
@@ -190,6 +176,7 @@ export type CreateChecklistInput = {
   description?: Maybe<Scalars['String']>;
   priority?: Maybe<Priority>;
   completed?: Maybe<Scalars['Boolean']>;
+  todos?: Maybe<Array<CreateTodoInput>>;
 };
 
 export type UpdateChecklistInput = {
@@ -199,6 +186,11 @@ export type UpdateChecklistInput = {
   priority: Priority;
   completed: Scalars['Boolean'];
   expires?: Maybe<Scalars['DateTime']>;
+};
+
+export type ReorderChecklistsInput = {
+  id: Scalars['ID'];
+  order: Scalars['Int'];
 };
 
 /** User Type */
@@ -359,9 +351,9 @@ export type ResolversTypes = ResolversObject<{
   Query: ResolverTypeWrapper<{}>;
   ID: ResolverTypeWrapper<Scalars['ID']>;
   Mutation: ResolverTypeWrapper<{}>;
-  Int: ResolverTypeWrapper<Scalars['Int']>;
   Priority: Priority;
   Todo: ResolverTypeWrapper<Todo>;
+  Int: ResolverTypeWrapper<Scalars['Int']>;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
   CreateTodoInput: CreateTodoInput;
   UpdateTodoInput: UpdateTodoInput;
@@ -369,6 +361,7 @@ export type ResolversTypes = ResolversObject<{
   Checklist: ResolverTypeWrapper<Checklist>;
   CreateChecklistInput: CreateChecklistInput;
   UpdateChecklistInput: UpdateChecklistInput;
+  ReorderChecklistsInput: ReorderChecklistsInput;
   User: ResolverTypeWrapper<User>;
   AuthPayload: ResolverTypeWrapper<AuthPayload>;
   CreateUserInput: CreateUserInput;
@@ -384,8 +377,8 @@ export type ResolversParentTypes = ResolversObject<{
   Query: {};
   ID: Scalars['ID'];
   Mutation: {};
-  Int: Scalars['Int'];
   Todo: Todo;
+  Int: Scalars['Int'];
   Boolean: Scalars['Boolean'];
   CreateTodoInput: CreateTodoInput;
   UpdateTodoInput: UpdateTodoInput;
@@ -393,6 +386,7 @@ export type ResolversParentTypes = ResolversObject<{
   Checklist: Checklist;
   CreateChecklistInput: CreateChecklistInput;
   UpdateChecklistInput: UpdateChecklistInput;
+  ReorderChecklistsInput: ReorderChecklistsInput;
   User: User;
   AuthPayload: AuthPayload;
   CreateUserInput: CreateUserInput;
@@ -490,18 +484,6 @@ export type QueryResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']
 > = ResolversObject<{
-  todo?: Resolver<
-    Maybe<ResolversTypes['Todo']>,
-    ParentType,
-    ContextType,
-    RequireFields<QueryTodoArgs, 'id'>
-  >;
-  todos?: Resolver<
-    Array<ResolversTypes['Todo']>,
-    ParentType,
-    ContextType,
-    RequireFields<QueryTodosArgs, never>
-  >;
   checklist?: Resolver<
     Maybe<ResolversTypes['Checklist']>,
     ParentType,
@@ -528,34 +510,34 @@ export type MutationResolvers<
   ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']
 > = ResolversObject<{
   createTodo?: Resolver<
-    ResolversTypes['Todo'],
+    ResolversTypes['Checklist'],
     ParentType,
     ContextType,
     RequireFields<MutationCreateTodoArgs, 'input'>
   >;
   updateTodo?: Resolver<
-    ResolversTypes['Todo'],
+    ResolversTypes['Checklist'],
     ParentType,
     ContextType,
     RequireFields<MutationUpdateTodoArgs, 'input'>
   >;
   toggleTodo?: Resolver<
-    ResolversTypes['Todo'],
+    ResolversTypes['Checklist'],
     ParentType,
     ContextType,
     RequireFields<MutationToggleTodoArgs, 'id'>
   >;
   deleteTodo?: Resolver<
-    ResolversTypes['Todo'],
+    ResolversTypes['Checklist'],
     ParentType,
     ContextType,
     RequireFields<MutationDeleteTodoArgs, 'id'>
   >;
   reorderTodos?: Resolver<
-    ResolversTypes['Todo'],
+    ResolversTypes['Checklist'],
     ParentType,
     ContextType,
-    RequireFields<MutationReorderTodosArgs, 'id' | 'order'>
+    RequireFields<MutationReorderTodosArgs, 'input'>
   >;
   createChecklist?: Resolver<
     ResolversTypes['Checklist'],
@@ -579,7 +561,7 @@ export type MutationResolvers<
     ResolversTypes['Checklist'],
     ParentType,
     ContextType,
-    RequireFields<MutationReorderChecklistsArgs, 'id' | 'order'>
+    RequireFields<MutationReorderChecklistsArgs, 'input'>
   >;
   createUser?: Resolver<
     ResolversTypes['AuthPayload'],
@@ -627,8 +609,6 @@ export type TodoResolvers<
     ParentType,
     ContextType
   >;
-  owner?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  checklist?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 

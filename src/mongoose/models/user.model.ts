@@ -2,6 +2,7 @@ import mongoose from 'mongoose';
 import bcrypt from 'bcryptjs';
 import { validate } from 'isemail';
 import { IUser } from '../interfaces/user.interface';
+import Checklist from './checklist.model';
 
 const { model, Schema } = mongoose;
 
@@ -24,22 +25,23 @@ const UserSchema = new Schema({
     default: Date.now(),
   },
   password: String,
-  checklists: [
-    {
-      type: Schema.Types.ObjectId,
-      ref: 'Checklist',
-    },
-  ],
 });
 
-UserSchema.pre<IUser>('save', async function save(next) {
-  if (!this.isModified('password')) return next();
+UserSchema.pre<IUser>('save', async function () {
+  if (!this.isModified('password')) return;
   try {
     const salt = await bcrypt.genSalt(10);
     this.password = await bcrypt.hash(this.password, salt);
-    return next();
   } catch (err) {
-    return next(err);
+    return err;
+  }
+});
+
+UserSchema.post<IUser>(/delete/i, async function (user) {
+  try {
+    return await Checklist.deleteMany({ owner: user._id });
+  } catch (err) {
+    console.log(`Error: ${err.message}`);
   }
 });
 
