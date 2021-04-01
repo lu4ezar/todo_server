@@ -29,7 +29,7 @@
     "isemail": "^3.2.0",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.11.18",
-    "mongodb": "^3.6.4"
+    "mongodb": "^3.6.5"
   },
   "devDependencies": {
     "@graphql-codegen/add": "^2.0.2",
