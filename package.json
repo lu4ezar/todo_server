@@ -30,7 +30,7 @@
     "jsonwebtoken": "^8.5.1",
 
     "mongoose": "^5.12.3",
-    "mongodb": "^3.6.5"
+    "mongodb": "^3.6.9"
   },
   "devDependencies": {
     "@graphql-codegen/add": "^2.0.2",
