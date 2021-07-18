@@ -7,11 +7,12 @@ import Checklist from '../../mongoose/models/checklist.model';
 import {
   CreateTodoInput,
   UpdateTodoInput,
-  Todo as TodoType
+  Todo as TodoType,
 } from '../../generated/graphql';
 
 export default class TodosAPI extends DataSource {
   collection: Collection;
+
   constructor(collection: Collection) {
     super();
     this.collection = collection;
@@ -26,18 +27,22 @@ export default class TodosAPI extends DataSource {
   // }
 
   // Mutations
-  async createTodo(input: CreateTodoInput): Promise<IChecklistDocument> {
-    const { checklist: id, ...todoInput } = input;
-    const newTodo = new Todo(todoInput);
-    const checklist = await Checklist.findOne({ _id: id });
-    if (!checklist) {
-      throw new Error('No checklist with provided id');
+  static async createTodo(input: CreateTodoInput): Promise<IChecklistDocument> {
+    try {
+      const { checklist: id, ...todoInput } = input;
+      const newTodo = new Todo(todoInput);
+      const checklist = await Checklist.findOne({ _id: id });
+      if (!checklist) {
+        throw new Error('No checklist with provided id');
+      }
+      checklist.todos.splice(newTodo.order, 0, newTodo);
+      return await checklist.save();
+    } catch (err) {
+      return err;
     }
-    checklist.todos.splice(newTodo.order, 0, newTodo);
-    return await checklist.save();
   }
 
-  async updateTodo(input: UpdateTodoInput): Promise<IChecklistDocument> {
+  static async updateTodo(input: UpdateTodoInput): Promise<IChecklistDocument> {
     const { id, ...todoInput } = input;
     const checklist = await Checklist.findOne({ 'todos._id': id });
     if (!checklist) {
@@ -48,10 +53,10 @@ export default class TodosAPI extends DataSource {
       throw new Error('No todo with provided id');
     }
     todo.set(todoInput);
-    return await checklist.save();
+    return checklist.save();
   }
 
-  async toggleTodo(id: TodoType['id']): Promise<IChecklistDocument> {
+  static async toggleTodo(id: TodoType['id']): Promise<IChecklistDocument> {
     const checklist = await Checklist.findOne({ 'todos._id': id });
     if (!checklist) {
       throw new Error('No checklist with provided id');
@@ -64,12 +69,18 @@ export default class TodosAPI extends DataSource {
     return checklist.save();
   }
 
-  async deleteTodo(id: ITodo['id']): Promise<IChecklistDocument> {
-    const checklist = await Checklist.findOne({ 'todos._id': id });
+  static async deleteTodo(id: ITodo['id']): Promise<IChecklistDocument | null> {
+    const checklist: IChecklistDocument | null = await Checklist.findOne({
+      'todos._id': id,
+    });
     if (!checklist) {
       throw new Error('No checklist with provided id');
     }
-    checklist.todos.pull({ _id: id });
-    return await checklist.save();
+    const todo = checklist.todos.id(id);
+    if (todo) {
+      todo.set({ completed: !todo.completed });
+      return checklist.save();
+    }
+    return checklist;
   }
 }
