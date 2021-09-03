@@ -28,7 +28,7 @@
 		"graphql-tag": "^2.12.4",
 		"isemail": "^3.2.0",
 		"jsonwebtoken": "^8.5.1",
-		"mongoose": "^5.12.13",
+		"mongoose": "^6.0.0",
 		"mongodb": "^3.6.9"
 	},
 	"devDependencies": {
