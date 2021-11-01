@@ -1,6 +1,6 @@
 import { model, Schema } from 'mongoose';
-import { IChecklistDocument } from '../interfaces/checklist.interface';
 import { Priority } from '../../generated/graphql';
+import { IChecklistDocument } from '../interfaces/checklist.interface';
 import { TodoSchema } from './todo.model';
 
 export const ChecklistSchema: Schema = new Schema({
@@ -11,7 +11,7 @@ export const ChecklistSchema: Schema = new Schema({
   },
   title: { type: String, required: true },
   description: String,
-  priority: { type: Priority, default: Priority.Normal },
+  priority: { type: String, enum: Priority, default: Priority.Normal },
   completed: { type: Boolean, default: false },
   created: {
     type: Date,

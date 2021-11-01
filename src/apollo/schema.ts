@@ -1,4 +1,4 @@
-import { makeExecutableSchema } from 'apollo-server-express';
+import { makeExecutableSchema } from '@graphql-tools/schema';
 import { GraphQLSchema } from 'graphql';
 import { DIRECTIVES } from '@graphql-codegen/typescript-mongodb';
 import { shared, todos, checklists, users } from './typeDefs';
@@ -9,4 +9,4 @@ const schema: GraphQLSchema = makeExecutableSchema({
   resolvers: [Todos, Checklists, Users],
 });
 
-export { schema };
+export default schema;

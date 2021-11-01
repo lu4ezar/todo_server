@@ -12,7 +12,7 @@ export const TodoSchema = new Schema({
     default: '',
   },
   description: String,
-  priority: { type: Priority, default: Priority.Normal },
+  priority: { type: String, enum: Priority, default: Priority.Normal },
   completed: { type: Boolean, default: false },
   expires: Date,
   created: {

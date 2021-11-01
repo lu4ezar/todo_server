@@ -13,39 +13,44 @@ const UserSchema = new Schema({
     required: true,
     unique: true,
     validate: [validate, 'invalid email'],
-    createIndexes: { unique: true }
+    createIndexes: { unique: true },
   },
   isAdmin: {
     type: Boolean,
     required: true,
-    default: true
+    default: true,
   },
   created: {
     type: Date,
-    default: Date.now()
+    default: Date.now(),
   },
-  password: String
+  password: String,
 });
 
-UserSchema.pre<IUser>('save', async function () {
+UserSchema.pre('save', async function save() {
   if (!this.isModified('password')) return;
   try {
     const salt = await bcrypt.genSalt(10);
     this.password = await bcrypt.hash(this.password, salt);
   } catch (err) {
-    return err;
+    if (err instanceof Error) console.log(err.message);
   }
 });
 
-UserSchema.post<IUser>(/delete/i, async function (user) {
+UserSchema.post<IUser>(/delete/i, async (user) => {
   try {
-    return await Checklist.deleteMany({ owner: user._id });
+    await Checklist.deleteMany({ owner: user._id });
   } catch (err) {
-    console.log(`Error: ${err.message}`);
+    if (err instanceof Error) {
+      console.error(`Error: ${err.message}`);
+    }
   }
 });
 
-UserSchema.methods.validatePassword = async function (this, candidate) {
+UserSchema.methods.validatePassword = async function validatePassword(
+  this,
+  candidate
+) {
   return bcrypt.compare(candidate, (this as IUser).password);
 };
 

@@ -28,18 +28,15 @@ export default class TodosAPI extends DataSource {
 
   // Mutations
   static async createTodo(input: CreateTodoInput): Promise<IChecklistDocument> {
-    try {
-      const { checklist: id, ...todoInput } = input;
-      const newTodo = new Todo(todoInput);
-      const checklist = await Checklist.findOne({ _id: id });
-      if (!checklist) {
-        throw new Error('No checklist with provided id');
-      }
-      checklist.todos.splice(newTodo.order, 0, newTodo);
-      return await checklist.save();
-    } catch (err) {
-      return err;
+    const { checklist: id, ...todoInput } = input;
+    const newTodo = new Todo(todoInput);
+    const checklist = await Checklist.findOne({ _id: id });
+    if (!checklist) {
+      throw new Error('No checklist with provided id');
     }
+    checklist.todos.splice(newTodo.order, 0, newTodo);
+    const result = await checklist.save();
+    return result;
   }
 
   static async updateTodo(input: UpdateTodoInput): Promise<IChecklistDocument> {
