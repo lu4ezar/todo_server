@@ -18,12 +18,11 @@ const resolvers: Resolvers = {
       _,
       { input },
       { dataSources, user }
-    ): Promise<Checklist> => {
-      return dataSources.checklistsAPI.createChecklist({
+    ): Promise<Checklist> =>
+      dataSources.checklistsAPI.createChecklist({
         ...input,
         owner: user._id,
-      });
-    },
+      }),
     updateChecklist: async (
       _,
       { input },
