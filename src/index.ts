@@ -7,7 +7,7 @@ import cookieParser from 'cookie-parser';
 import db from './mongoose/db';
 import dataSources from './apollo/datasources';
 import schema from './apollo/schema';
-import { permissions } from './apollo/permissions';
+import permissions from './apollo/permissions';
 import logger from './logger';
 
 const app = express();

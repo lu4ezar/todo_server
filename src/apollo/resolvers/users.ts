@@ -46,7 +46,7 @@ const resolvers: Resolvers = {
     deleteUser: async (_, { email }, { dataSources, res }): Promise<IUser> => {
       // not really needed //
       res.clearCookie('token');
-      return await dataSources.usersAPI.deleteUser(email);
+      return dataSources.usersAPI.deleteUser(email);
     },
   } as MutationResolvers,
 };

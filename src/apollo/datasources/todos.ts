@@ -27,7 +27,7 @@ export default class TodosAPI extends DataSource {
   // }
 
   // Mutations
-  static async createTodo(input: CreateTodoInput): Promise<IChecklistDocument> {
+  createTodo = async (input: CreateTodoInput): Promise<IChecklistDocument> => {
     const { checklist: id, ...todoInput } = input;
     const newTodo = new Todo(todoInput);
     const checklist = await Checklist.findOne({ _id: id });
@@ -37,9 +37,9 @@ export default class TodosAPI extends DataSource {
     checklist.todos.splice(newTodo.order, 0, newTodo);
     const result = await checklist.save();
     return result;
-  }
+  };
 
-  static async updateTodo(input: UpdateTodoInput): Promise<IChecklistDocument> {
+  updateTodo = async (input: UpdateTodoInput): Promise<IChecklistDocument> => {
     const { id, ...todoInput } = input;
     const checklist = await Checklist.findOne({ 'todos._id': id });
     if (!checklist) {
@@ -51,9 +51,9 @@ export default class TodosAPI extends DataSource {
     }
     todo.set(todoInput);
     return checklist.save();
-  }
+  };
 
-  static async toggleTodo(id: TodoType['id']): Promise<IChecklistDocument> {
+  toggleTodo = async (id: TodoType['id']): Promise<IChecklistDocument> => {
     const checklist = await Checklist.findOne({ 'todos._id': id });
     if (!checklist) {
       throw new Error('No checklist with provided id');
@@ -64,9 +64,9 @@ export default class TodosAPI extends DataSource {
     }
     todo.set({ completed: !todo.completed });
     return checklist.save();
-  }
+  };
 
-  static async deleteTodo(id: ITodo['id']): Promise<IChecklistDocument | null> {
+  deleteTodo = async (id: ITodo['id']): Promise<IChecklistDocument | null> => {
     const checklist: IChecklistDocument | null = await Checklist.findOne({
       'todos._id': id,
     });
@@ -79,5 +79,5 @@ export default class TodosAPI extends DataSource {
       return checklist.save();
     }
     return checklist;
-  }
+  };
 }

@@ -13,8 +13,6 @@ services:
       - '4000:4000'
     env_file:
       - .env
-    external_links:
-      - mongo
     depends_on:
       mongo:
         condition: service_healthy

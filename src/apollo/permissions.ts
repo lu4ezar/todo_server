@@ -1,12 +1,12 @@
-import { rule, shield, allow, not } from 'graphql-shield';
+import { rule, shield, allow } from 'graphql-shield';
 
 const isAuthenticated = rule({ cache: 'contextual' })(
   (_, __, ctx) => ctx.user != null
 );
 
-const isAuthorized = rule({ cache: 'strict' })((_, __, ctx) => {
-  return !!ctx.user.email;
-});
+const isAuthorized = rule({ cache: 'strict' })(
+  (_, __, ctx) => !!ctx.user.email
+);
 
 // const isTodoOwner = rule({
 //   cache: 'strict',
@@ -28,7 +28,7 @@ const isAuthorized = rule({ cache: 'strict' })((_, __, ctx) => {
 
 const isAdmin = rule()((_, __, ctx) => ctx.user.isAdmin);
 
-export const permissions = shield(
+const permissions = shield(
   {
     Query: {
       '*': isAuthenticated,
@@ -37,7 +37,7 @@ export const permissions = shield(
     Mutation: {
       '*': isAuthorized,
       createUser: allow,
-      loginUser: not(isAuthenticated),
+      loginUser: allow,
     },
     // Checklist: isChecklistOwner,
     // Todo: isAuthorized,
@@ -45,3 +45,5 @@ export const permissions = shield(
   },
   { allowExternalErrors: true }
 );
+
+export default permissions;

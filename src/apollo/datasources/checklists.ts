@@ -11,36 +11,41 @@ import {
 
 export default class ChecklistsAPI extends DataSource {
   collection: Collection;
+
   constructor(collection: Collection) {
     super();
     this.collection = collection;
   }
 
   // Queries
-  async getChecklists(userId: User['id']): Promise<Array<IChecklistDocument>> {
-    return await Checklist.find({ owner: userId });
-  }
+  getChecklists = async (
+    userId: User['id']
+  ): Promise<Array<IChecklistDocument>> => Checklist.find({ owner: userId });
 
-  async getChecklist(_id: ChecklistType['id']): Promise<IChecklistDocument> {
-    return (await Checklist.findOne({ _id })) as IChecklistDocument;
-  }
+  getChecklist = async (
+    _id: ChecklistType['id']
+  ): Promise<IChecklistDocument> =>
+    (await Checklist.findOne({ _id })) as IChecklistDocument;
+
   // Mutations
-  async createChecklist(
+  createChecklist = async (
     input: CreateChecklistInput
-  ): Promise<IChecklistDocument> {
+  ): Promise<IChecklistDocument> => {
     const checklist = new Checklist(input) as IChecklistDocument;
-    return await checklist.save();
-  }
-  async updateChecklist(
+    return checklist.save();
+  };
+
+  updateChecklist = async (
     input: UpdateChecklistInput
-  ): Promise<IChecklistDocument> {
-    return (await Checklist.findOneAndUpdate({ _id: input.id }, input, {
+  ): Promise<IChecklistDocument> =>
+    (await Checklist.findOneAndUpdate({ _id: input.id }, input, {
       new: true,
     })) as IChecklistDocument;
-  }
-  async deleteChecklist(_id: ChecklistType['id']): Promise<IChecklistDocument> {
-    return (await Checklist.findOneAndDelete({
+
+  deleteChecklist = async (
+    _id: ChecklistType['id']
+  ): Promise<IChecklistDocument> =>
+    (await Checklist.findOneAndDelete({
       _id,
     })) as IChecklistDocument;
-  }
 }

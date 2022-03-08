@@ -3,7 +3,7 @@ import ChecklistsAPI from './checklists';
 import UsersAPI from './users';
 import TodoModel from '../../mongoose/models/todo.model';
 import ChecklistModel from '../../mongoose/models/checklist.model';
-import UserModel from '../../mongoose//models/user.model';
+import UserModel from '../../mongoose/models/user.model';
 
 export { TodosAPI, ChecklistsAPI, UsersAPI };
 export default () => ({
