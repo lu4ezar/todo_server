@@ -10,7 +10,6 @@ const dbPath =
     : (process.env.DEV_MONGODB as string);
 console.log(`dbPath: ${dbPath}`);
 console.log(`user: ${process.env.MONGO_INITDB_ROOT_USERNAME}`);
-console.log(`pass: ${process.env.MONGO_INITDB_ROOT_PASSWORD}`);
 
 mongoose.connect(dbPath, {
   useNewUrlParser: true,
