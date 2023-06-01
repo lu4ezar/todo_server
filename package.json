@@ -59,7 +59,7 @@
 		"eslint-webpack-plugin": "^3.0.1",
 		"husky": "^7.0.4",
 		"lint-staged": "^13.1.2",
-		"nodemon": "^2.0.20",
+		"nodemon": "^2.0.22",
 		"prettier": "2.3.2",
 		"ts-loader": "9.2.8",
 		"ts-node": "^10.9.1",
